@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exalted Mercury - Guaranteed Academic Success</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scroll behavior for smooth navigation */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Fix for the missing menu between 645px and 768px (sm breakpoint) */
+        .desktop-nav-links {
+            display: none;
+        }
+        @media (min-width: 768px) {
+            .desktop-nav-links {
+                display: flex !important; /* Ensure desktop links show on desktop */
+            }
+        }
+        .mobile-menu-toggle {
+            display: flex; /* Ensure toggle is visible by default on mobile */
+        }
+        @media (min-width: 768px) {
+            .mobile-menu-toggle {
+                display: none; /* Hide toggle on desktop */
+            }
+        }
+        
+        /* Ensure anchors work well under sticky header */
+        .anchor-padding {
+            padding-top: 4rem; /* Adjusted for sticky header height */
+            margin-top: -4rem; 
+        }
+        /* Style for the dropdown menu on mobile (FIXED: Added opacity) */
+        #mobile-menu {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0; /* Hides menu properly when closed */
+        }
+        #mobile-menu.open {
+            max-height: 400px; /* Sufficient height to show all links */
+            opacity: 1; /* Shows menu when open */
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white font-sans">
+
+    <div id="app-root">
+        </div>
+
+    <script>
+        // === Configuration & Constants ===
+        // Replace these placeholders with your actual details
+        const WHATSAPP_NUMBER = "+917906289646";
+        const EMAIL_ID = "neelamberpreet@gmail.com";
+        const CTA_OFFER = "Book a Demo Class Now & Get Your Second Class FREE!";
+        const WHATSAPP_MESSAGE = "Hello, I would like to book a demo class for my child.";
+        const BRAND_NAME = "Exalted Mercury"; 
+        
+        // *** REPLACE WITH YOUR LIVE FORMSPREE ENDPOINT ***
+        const FORMSPREE_ENDPOINT = "https://formspree.io/f/mzzjazzj"; 
+        
+        // Color Classes
+        const PRIMARY_COLOR_CLASSES = "bg-sky-600 hover:bg-sky-700 text-white";
+        const ACCENT_COLOR_CLASSES = "text-emerald-600";
+        const SECONDARY_COLOR_CLASSES = "bg-emerald-500 hover:bg-emerald-600 text-white";
+
+        // --- Team Data ---
+        const TEAM_MEMBERS_DATA = [
+            {
+                name: "Dr. Evelyn Reed, Ph.D.",
+                subject: "AP Calculus (AB/BC) & A-Level Maths P3",
+                bio: "With a Doctorate in Applied Mathematics, Dr. Reed specializes in helping students master complex university-level concepts for perfect exam scores.",
+                focus: "Advanced Math, Competitive Exams",
+                // IMAGE INSERTION POINT (1) - Profile Image
+                // Example: imgUrl: "https://example.com/images/dr-reed.jpg"
+                imgUrl: "https://images.unsplash.com/photo-1599305445671-ac91f9798708?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+            },
+            {
+                name: "Mr. David Chen, M.Sc.",
+                subject: "GCSE/IGCSE Physics & AP Physics C",
+                bio: "A former aerospace engineer, David simplifies mechanics, electricity, and magnetism, providing real-world context for exam success in both curricula.",
+                focus: "Physics, Engineering Prep",
+                // IMAGE INSERTION POINT (2) - Profile Image
+                // Example: imgUrl: "https://example.com/images/mr-chen.jpg"
+                imgUrl: "https://images.unsplash.com/photo-1628157579543-c009d1844b20?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+            },
+            {
+                name: "Ms. Anya Sharma, B.E.",
+                subject: "AP/A-Level Chemistry & IB Science",
+                bio: "Anya focuses on building foundational concepts in Organic and Physical Chemistry, turning struggling students into confident grade-achievers.",
+                focus: "Chemistry, Concept Building",
+                // IMAGE INSERTION POINT (3) - Profile Image
+                // Example: imgUrl: "https://example.com/images/ms-sharma.jpg"
+                imgUrl: "https://images.unsplash.com/photo-1582266710714-3864010531e0?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+            }
+        ];
+        
+        // --- Helper Function (Icon) ---
+        const getIconSVG = (name, className = "w-6 h-6", attributes = '') => {
+            const icons = {
+                checkCircle: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>`,
+                messageSquare: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+                calculator: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="18" x2="16" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="8" y1="10" x2="8" y2="10"/></svg>`,
+                user: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+                globe: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" y1="12" x2="22" y2="12"/></svg>`,
+                atom: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M14.5 9.5l3.5-3.5"/><path d="M9.5 14.5l-3.5 3.5"/><path d="M22 12c0-5.5-4.5-10-10-10S2 6.5 2 12c0 1.4.3 2.7.7 4"/><path d="M22 12c0 1.4-.3 2.7-.7 4M10 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10M14 2c2 2 3 4 3 6M10 2c-2 2-3 4-3 6"/></svg>`,
+                award: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 22 12 18 17 22 15.79 13.89"/></svg>`,
+                whatsapp: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="${className}" fill="currentColor"><path d="M380.9 97.1C339.4 54.4 283.5 32 223.7 32c-122.4 0-221.7 99.3-221.7 221.7 0 39.3 10.5 77.1 30.5 111.7l-32 116.7 121.7-31.5c33 17.8 70 27.2 108.8 27.2h.1c122.3 0 221.6-99.3 221.6-221.7 0-59.8-22.4-115.6-65.1-157.1zM223.7 448h-.1c-34.5 0-68.5-9.3-97.7-27l-66.2 17.2 17.4-63.9c-20.3-33.1-31.1-70.9-31.1-110 0-99.2 80.8-179.9 179.9-179.9 48.7 0 94.6 18.9 129.5 53.7 34.8 34.8 53.7 80.7 53.7 129.5 0 99.1-80.8 179.9-179.9 179.9zM358.2 298.5c-4.4-2.2-26-12.8-30.1-14.2s-7-2.2-9.9 2.2c-2.9 4.4-11.4 14.2-13.9 17.1s-4.9 3.3-9.1 1.1c-4.2-2.2-17.7-6.5-33.6-20.7-12.4-10.9-20.9-24.4-23.4-28.7s-2.5-4.4-1.9-8.4c.6-4 1.8-7.5 2.7-9.4s1.8-3.4 2.7-5.2c.9-1.8.4-3.4-.2-4.8s-2.6-3.7-5.2-6.5c-2.6-2.9-4.7-2.4-7.6-2.4h-8.2c-2.9 0-7.5 1.1-11.4 5.5s-14.9 14.5-14.9 35.4c0 20.9 15.3 41 17.4 43.8s30 46.1 72.8 64.9c10.9 4.8 19.4 7.7 26.1 9.8 8.8 2.7 16.9 2.3 23.3 1.4 7.3-1 22.5-9.2 25.7-18.1s3.3-16.7 2.3-18.4z"/></svg>`,
+                bookOpen: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 19V5c0-1.1.9-2 2-2h12.5L22 7.5V19c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2z"/><polyline points="12 2 12 7 17 7"/></svg>`,
+                feather: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M18 6l-6.5 6.5M12 12l-6.5 6.5M7.5 14.5L5 17m11.5-11.5L19 4"/></svg>`,
+                awardSolid: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="${className}"><path fill-rule="evenodd" d="M9.828 4.227a1.5 1.5 0 0 0-1.06-.44H5.973a1.5 1.5 0 0 0-1.06.44A1.5 1.5 0 0 0 4.5 5.25v13.5c0 .53.211 1.04.587 1.417a1.5 1.5 0 0 0 1.06.44h.798a.75.75 0 0 1 0 1.5h-1.5a3 3 0 0 1-3-3V5.25c0-1.28.986-2.31 2.227-2.435.592-.06.945-.262 1.107-.577.162-.315.152-.693-.03-1.026a1.5 1.5 0 0 0-1.378-2.262H5.973A3 3 0 0 0 3 5.25v13.5a3 3 0 0 0 3 3h.798a.75.75 0 0 1 0-1.5h-.798a1.5 1.5 0 0 1-1.06-.44A1.5 1.5 0 0 1 4.5 18.75V5.25c0-.53.211-1.04.587-1.417zM14.172 4.227a1.5 1.5 0 0 1 1.06-.44h3.795a1.5 1.5 0 0 1 1.06.44A1.5 1.5 0 0 1 19.5 5.25v13.5c0 .53-.211 1.04-.587 1.417a1.5 1.5 0 0 1-1.06.44h-.798a.75.75 0 0 0 0 1.5h1.5a3 3 0 0 0 3-3V5.25a3 3 0 0 0-2.227-2.935c-.592-.06-.945-.262-1.107-.577-.162-.315-.152-.693.03-1.026a1.5 1.5 0 0 1 1.378-2.262h3.795a3 3 0 0 1 3 3v13.5a3 3 0 0 1-3 3h-.798a.75.75 0 0 0 0 1.5h1.5a3 3 0 0 0 3-3V5.25a3 3 0 0 0-2.227-2.935c-.592-.06-.945-.262-1.107-.577-.162-.315-.152-.693.03-1.026a1.5 1.5 0 0 1 1.378-2.262H15.232a1.5 1.5 0 0 1-1.06-.44A1.5 1.5 0 0 1 14.172 4.227z" clip-rule="evenodd"/><path d="M12 17.5a.75.75 0 0 0 0 1.5h-1.5a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-1.5a.75.75 0 0 0 0-1.5z"/></svg>`,
+                menu: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`,
+                x: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`
+            };
+            return icons[name] || `<div ${attributes} class="${className}">?</div>`;
+        };
+
+        // --- Core Utility: Scroll Function ---
+        const scrollToSection = (id) => {
+            // Find the target element
+            const element = document.getElementById(id);
+            if (element) {
+                // Determine the scroll position, adjusting for the sticky header height (e.g., 4rem = 64px)
+                const headerHeight = 64; 
+                const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+                const offsetPosition = elementPosition - headerHeight;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+
+            // Close mobile menu after clicking a link
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu && mobileMenu.classList.contains('open')) {
+                toggleMobileMenu();
+            }
+        };
+
+        const toggleMobileMenu = () => {
+            const menu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+
+            if (menu.classList.contains('open')) {
+                // Close menu
+                menu.classList.remove('open');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            } else {
+                // Open menu
+                menu.classList.add('open');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            }
+        };
+
+        // --- Rendering Functions ---
+
+        const renderNavbar = () => {
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^\d+]/g, '')}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+            
+            // MENU SEQUENCE ADJUSTED: Advanced Curricula is first in the nav bar
+            const navItems = [
+                { name: 'Home', id: 'home' },
+                { name: 'Advanced Curricula', id: 'advanced-anchor' }, 
+                { name: 'Foundation Grades', id: 'foundation-anchor' }, 
+                { name: 'Team', id: 'team' },
+                { name: 'Results', id: 'results' },
+                { name: 'Pricing', id: 'pricing' }
+            ];
+
+            return `
+                <header class="sticky top-0 z-50 bg-white shadow-lg">
+                    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+                        <div class="text-xl font-extrabold text-sky-600 tracking-tight text-lg sm:text-xl">
+                            ${BRAND_NAME} | Global Academic Success
+                        </div>
+
+                        <div class="desktop-nav-links space-x-8">
+                            ${navItems.map(item => `
+                                <button
+                                    onclick="scrollToSection('${item.id}')"
+                                    class="text-gray-600 hover:text-sky-600 font-medium transition duration-150 text-sm"
+                                >
+                                    ${item.name}
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <div class="mobile-menu-toggle items-center space-x-3">
+                            <button id="menu-toggle" onclick="toggleMobileMenu()" class="text-gray-600 hover:text-sky-600 p-2 focus:outline-none">
+                                ${getIconSVG("menu", "w-6 h-6", 'id="menu-icon"')}
+                                ${getIconSVG("x", "w-6 h-6 hidden", 'id="close-icon"')}
+                            </button>
+                            <a
+                                href="${whatsappUrl}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="flex items-center space-x-1 font-semibold py-2 px-3 rounded-xl shadow-lg transition duration-300 bg-emerald-500 hover:bg-emerald-600 text-white text-xs"
+                            >
+                                ${getIconSVG("whatsapp", "w-4 h-4")}
+                                <span>Chat</span>
+                            </a>
+                        </div>
+                        
+                        <a
+                            href="${whatsappUrl}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="hidden md:flex items-center space-x-2 font-semibold py-2 px-4 rounded-xl shadow-lg transition duration-300 transform hover:scale-105 text-sm bg-emerald-500 hover:bg-emerald-600 text-white"
+                        >
+                            ${getIconSVG("whatsapp", "w-5 h-5")}
+                            <span>WhatsApp Now</span>
+                        </a>
+                    </nav>
+
+                    <div id="mobile-menu" class="sm:hidden bg-white shadow-md border-t border-gray-100">
+                        <div class="px-2 pt-2 pb-3 space-y-1">
+                            ${navItems.map(item => `
+                                <button
+                                    onclick="scrollToSection('${item.id}')"
+                                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-sky-600 transition duration-150"
+                                >
+                                    ${item.name}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                </header>
+            `;
+        };
+
+        const renderHeroSection = () => {
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^\d+]/g, '')}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+            return `
+                <section id="home" class="pt-20 pb-16 bg-gray-50">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
+                        <div>
+                            <span class="font-semibold uppercase tracking-wider text-sm ${ACCENT_COLOR_CLASSES}">
+                                World-Class 1:1 Maths & Science Coaching
+                            </span>
+                            <h1 class="mt-2 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+                                Guaranteed A/A* Grades in US & UK <span class="text-sky-600">Curricula.</span>
+                            </h1>
+                            <p class="mt-4 text-lg text-gray-600 max-w-lg">
+                                Our expert team offers personalized, results-driven tutoring specializing in US (K-12, AP) and UK (GCSE, A-Level) systems to build confidence and achieve <strong>top 5% scores</strong>.
+                            </p>
+                            <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                                <button
+                                    onclick="scrollToSection('contact')"
+                                    class="flex items-center justify-center font-bold py-3 px-6 text-base rounded-xl shadow-xl transition duration-300 transform hover:scale-105 ${PRIMARY_COLOR_CLASSES}"
+                                >
+                                    ${CTA_OFFER.split('&')[0].trim()}
+                                </button>
+                                <a
+                                    href="${whatsappUrl}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="flex items-center justify-center space-x-2 font-semibold py-3 px-6 text-base rounded-xl shadow-md transition duration-300 transform hover:scale-105 bg-emerald-500 hover:bg-emerald-600 text-white"
+                                >
+                                    ${getIconSVG("whatsapp", "w-5 h-5")}
+                                    <span>Chat on WhatsApp</span>
+                                </a>
+                            </div>
+                            <p class="mt-3 text-sm font-bold text-red-600">
+                                *Special Offer: ${CTA_OFFER.split('&')[1].trim()}
+                            </p>
+                            <div class="mt-6 flex items-center space-x-3 text-sm text-gray-700">
+                                ${getIconSVG("award", `w-5 h-5 ${ACCENT_COLOR_CLASSES}`)}
+                                <span class="font-semibold">Over 90% of students achieve a 2-grade increase.</span>
+                            </div>
+                        </div>
+                        <div class="md:col-start-2 flex justify-center order-first md:order-last">
+                            <div class="w-full max-w-sm h-64 bg-sky-200 rounded-2xl shadow-2xl flex items-center justify-center p-6">
+                                ${getIconSVG("globe", "w-20 h-20 text-sky-800 opacity-70")}
+                                <p class="text-xl font-semibold text-sky-800 absolute">Academic Success Graphic</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+        };
+
+        // Added iconColorClass parameter to control icon color for coherence
+        const renderServiceCard = (iconName, title, description, borderColorClass, iconColorClass) => `
+            <div class="p-6 sm:p-8 bg-white rounded-xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 border-t-4 ${borderColorClass}">
+                ${getIconSVG(iconName, `w-8 h-8 ${iconColorClass} mb-4`)} 
+                <h3 class="text-xl font-bold text-gray-900 mb-3">${title}</h3>
+                <p class="text-gray-600 text-sm">${description}</p>
+            </div>
+        `;
+        
+        // --- COMBINED ALL SUBJECTS SECTION ---
+        const renderAllSubjectsSection = () => {
+            return `
+                <section id="subjects" class="py-16 sm:py-20 bg-white">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 text-center pt-0 mb-16">
+                            Curriculum Expertise: From Foundation to Advanced
+                        </h2>
+                        
+                        <div id="foundation-anchor" class="anchor-padding bg-sky-50 p-6 sm:p-8 rounded-2xl shadow-inner mb-12 lg:mb-16">
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-2 flex items-center justify-center">
+                                ${getIconSVG("bookOpen", "w-7 h-7 text-sky-600 mr-2")} Primary Academic Foundation (Grade 1-5)
+                            </h3>
+                            <p class="text-base text-gray-600 text-center mb-6 sm:mb-8 max-w-3xl mx-auto">
+                                **Our Core Expertise:** Building strong foundational concepts in young students (Standard 2nd, 3rd, 4th, 5th) for superior future readiness in any curriculum.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                                ${renderServiceCard("feather", "Core Literacy & Reading", "Focusing on phonics, comprehension, vocabulary building, and early writing skills to ensure confidence in all subjects.", "border-emerald-500", "text-sky-600")}
+                                ${renderServiceCard("calculator", "Primary Mathematics Skills", "Mastering number sense, basic arithmetic, problem-solving techniques, and mental math necessary for future success.", "border-emerald-500", "text-sky-600")}
+                                ${renderServiceCard("bookOpen", "General Class Studies Support", "Providing dedicated homework help, revision, and concept reinforcement across all regular school subjects for better preparedness.", "border-emerald-500", "text-sky-600")}
+                            </div>
+                        </div>
+
+                        <div id="advanced-anchor" class="anchor-padding p-6 sm:p-8 rounded-2xl shadow-xl border border-gray-100 bg-white">
+                             <h3 class="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-2 flex items-center justify-center">
+                                ${getIconSVG("atom", "w-7 h-7 text-emerald-600 mr-2")} Advanced Subject Mastery (Grade 6+)
+                            </h3>
+                            <p class="text-base text-gray-600 text-center mb-6 sm:mb-8 max-w-3xl mx-auto">
+                                Specialists in advanced subjects for secondary school, IGCSE/GCSE, AP, and A-Level exam excellence.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                                ${renderServiceCard("calculator", "Advanced Mathematics", "From mastering Algebra 2 and Pre-Calculus to achieving high scores in AP Calculus (AB/BC) and A-Level Maths.", "border-sky-600", "text-emerald-600")}
+                                ${renderServiceCard("atom", "Physics & Chemistry Mastery", "Dedicated support for GCSE/A-Level Sciences, AP Physics (1/2/C), and Advanced Placement Chemistry topics.", "border-sky-600", "text-emerald-600")}
+                                ${renderServiceCard("messageSquare", "Targeted Exam Prep", "Structured programs focused on SAT/ACT Math, final exams, IGCSE/GCSE grade boosting, and competitive college applications.", "border-sky-600", "text-emerald-600")}
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-10 sm:mt-16">
+                            <button
+                                onclick="scrollToSection('contact')"
+                                class="inline-flex items-center justify-center font-bold py-3 px-6 text-base rounded-xl shadow-xl transition duration-300 transform hover:scale-105 ${SECONDARY_COLOR_CLASSES}"
+                            >
+                                Contact Us for Tailored Subject Matching
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            `;
+        };
+        // --- END COMBINED SECTION ---
+
+
+        const renderTeamMemberCard = (member) => `
+            <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center text-center transition duration-300 hover:shadow-2xl hover:-translate-y-1">
+                <img 
+                    src="${member.imgUrl}" 
+                    alt="${member.name}" 
+                    class="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-full shadow-lg mb-4 border-4 border-sky-200"
+                    onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,${encodeURIComponent(getIconSVG('user', 'w-32 h-32 text-gray-400'))}'"
+                />
+                <h4 class="text-xl font-bold text-gray-900 mb-1">${member.name}</h4>
+                <p class="text-sm font-semibold ${ACCENT_COLOR_CLASSES} mb-2">${member.subject}</p>
+                <p class="text-gray-600 text-sm italic mb-3">${member.bio}</p>
+                <span class="inline-block px-3 py-1 text-xs font-medium bg-sky-100 text-sky-800 rounded-full">${member.focus}</span>
+            </div>
+        `;
+        
+        // --- About/Team Section (Size already correct) ---
+        const renderAboutSection = () => (
+            `
+            <section id="team" class="py-16 sm:py-24 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 text-center mb-4">
+                        Meet Our Academic Specialist Team
+                    </h2>
+                    <p class="text-lg sm:text-xl text-gray-600 text-center mb-12 sm:mb-16 max-w-4xl mx-auto">
+                        Our tutors don't just teach; they <strong>guarantee top-tier academic results</strong>. Every specialist is a master in their field, dedicated to advanced US (AP, Common Core) and UK (A-Level, GCSE) curricula. Their deep knowledge and student-centric approach is our greatest strength.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+                        ${TEAM_MEMBERS_DATA.map(renderTeamMemberCard).join('')}
+                        
+                        <div class="bg-sky-100 p-8 rounded-2xl shadow-inner flex flex-col justify-center items-center text-center h-full">
+                            ${getIconSVG("award", "w-10 h-10 sm:w-12 sm:h-12 text-sky-800 mb-4")}
+                            <h4 class="text-2xl font-bold text-sky-900 mb-2">Join Our Expert Roster</h4>
+                            <p class="text-sky-700 mb-6">All our 10+ tutors are subject matter experts, vetted for curriculum knowledge and teaching excellence.</p>
+                            <button
+                                onclick="scrollToSection('contact')"
+                                class="mt-auto font-semibold py-3 px-6 rounded-full shadow-lg transition duration-300 ${SECONDARY_COLOR_CLASSES}"
+                            >
+                                Get Matched with a Specialist
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            `
+        );
+
+        const renderTestimonialCard = (quote, name, subject) => `
+            <div class="p-6 bg-white rounded-xl shadow-lg border border-gray-100 h-full flex flex-col">
+                ${getIconSVG("messageSquare", "w-8 h-8 text-sky-400 mb-4")}
+                <p class="text-gray-700 italic flex-grow text-sm">"${quote}"</p>
+                <div class="mt-4 pt-4 border-t border-gray-100">
+                    <p class="font-semibold text-gray-900">${name}</p>
+                    <p class="text-sm ${ACCENT_COLOR_CLASSES}">${subject}</p>
+                </div>
+            </div>
+        `;
+
+        const renderTestimonialsSection = () => `
+            <section id="results" class="py-16 sm:py-20 bg-gray-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 text-center mb-4">
+                        Grade Transformations: Success Stories
+                    </h2>
+                    <p class="text-lg text-gray-600 text-center mb-10 sm:mb-12 max-w-3xl mx-auto">
+                        Achieving excellence is our standard. Read what families in the US and UK say about our impact.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                        ${renderTestimonialCard("The personalized focus on A-Level Physics concepts was phenomenal. My daughter secured an A* and got into her first-choice university.", "Mr. Stevens", "Parent, Bristol, UK (A-Level Physics)")}
+                        ${renderTestimonialCard("My son was scoring a 3 on his AP Calculus exams. After a month of targeted tutoring, he scored a 5! Truly exceptional.", "Sarah K.", "Parent, Texas, USA (AP Calculus AB)")}
+                        ${renderTestimonialCard("I finally understood Organic Chemistry. The tutor broke down the reactions step-by-step. My grade went from a C to a B+.", "Aisha F.", "High School Student, New York, USA (AP Chemistry)")}
+                        ${renderTestimonialCard("They are specialists in the new GCSE Math curriculum. My child's confidence soared, resulting in a crucial Grade 8.", "David M.", "Parent, London, UK (GCSE Mathematics)")}
+                        ${renderTestimonialCard("We needed help preparing for the SAT Math section. The strategic approach was excellent, resulting in a near-perfect score.", "Ben C.", "Student, California, USA (SAT Math)")}
+                        ${renderTestimonialCard("The intensive prep for A-Level Maths P3 was invaluable. The deep subject knowledge of the tutor was clear in every session.", "Jasmine R.", "A-Level Student, Birmingham, UK (A-Level Maths)")}
+                    </div>
+                </div>
+            </section>
+        `;
+
+        const renderPricingSection = () => `
+            <section id="pricing" class="py-16 sm:py-20 bg-gray-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-4">
+                        Transparent and Flexible Pricing
+                    </h2>
+                    <p class="text-lg text-gray-600 text-center mb-10 sm:mb-12 max-w-3xl mx-auto">
+                        Invest in academic excellence with tailored packages designed for sustained progress.
+                    </p>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                        <div class="bg-white p-8 rounded-xl shadow-xl flex flex-col justify-between border-t-8 border-gray-300">
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Quick Fix</h3>
+                                <p class="text-gray-600 mb-6">One-off help for homework or pre-test review.</p>
+                                <p class="text-4xl font-extrabold text-sky-600 mb-6">
+                                    $55 <span class="text-lg text-gray-500 font-normal">/ hour</span>
+                                </p>
+                                <ul class="space-y-3 text-gray-700">
+                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>1 hour session minimum</span></li>
+                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Flexible scheduling</span></li>
+                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Standard Q&A format</span></li>
+                                </ul>
+                            </div>
+                            <button
+                                onclick="scrollToSection('contact')"
+                                class="mt-8 w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 rounded-xl transition duration-300"
+                            >
+                                Book Now
+                            </button>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-xl shadow-2xl flex flex-col justify-between border-t-8 border-sky-600 transform lg:scale-105">
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Semester Progress</h3>
+                                <p class="text-gray-600 mb-6">Our most popular choice for long-term improvement.</p>
+                                <p class="text-4xl font-extrabold text-sky-600 mb-6">
+                                    $50 <span class="text-lg text-gray-500 font-normal">/ hour (best value)</span>
+                                </p>
+                            </div>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span><span class="font-semibold">8-hour block</span> commitment</span></li>
+                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Custom syllabus review</span></li>
+                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Weekly progress reports</span></li>
+                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Dedicated Q&A support</span></li>
+                            </ul>
+                            <button
+                                onclick="scrollToSection('contact')"
+                                class="mt-8 w-full font-bold py-3 rounded-xl shadow-lg transition duration-300 ${PRIMARY_COLOR_CLASSES}"
+                            >
+                                Secure Your Spot
+                            </button>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-xl shadow-xl flex flex-col justify-between border-t-8 border-gray-300">
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Exam Mastery</h3>
+                                <p class="text-gray-600 mb-6">Intensive, focused prep for major terminal exams.</p>
+                                <p class="text-4xl font-extrabold text-sky-600 mb-6">
+                                    $45 <span class="text-lg text-gray-500 font-normal">/ hour (volume discount)</span>
+                                </p>
+                                <ul class="space-y-3 text-gray-700">
+                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span><span class="font-semibold">15-hour block</span> booking</span></li>
+                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Timed practice tests & grading</span></li>
+                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>1-on-1 feedback on mock exams</span></li>
+                                </ul>
+                            </div>
+                            <button
+                                onclick="scrollToSection('contact')"
+                                class="mt-8 w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 rounded-xl transition duration-300"
+                            >
+                                Target Your Grade
+                            </button>
+                        </div>
+                    </div>
+                    <p class="mt-10 sm:mt-12 text-center text-gray-500 text-sm">
+                        *Note: Rates are based on standard US/UK private tutoring fees.
+                    </p>
+                </div>
+            </section>
+        `;
+
+
+        const renderContactSection = () => `
+            <section id="contact" class="py-16 sm:py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-start bg-sky-50 p-6 sm:p-10 rounded-2xl shadow-xl">
+                        <div class="mb-8 lg:mb-0">
+                            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+                                ${CTA_OFFER}
+                            </h2>
+                            <p class="text-lg text-gray-600 mb-6 font-bold">
+                                This 15-minute <strong>free demo class</strong> is the perfect way to understand your child's needs and decide the best learning strategy for them.
+                            </p>
+                            <div class="space-y-4">
+                                <div class="flex items-center text-gray-700">
+                                    ${getIconSVG("checkCircle", `w-5 h-5 mr-3 flex-shrink-0 ${ACCENT_COLOR_CLASSES}`)}
+                                    <span class="text-sm sm:text-base">Detailed curriculum and concept analysis.</span>
+                                </div>
+                                <div class="flex items-center text-gray-700">
+                                    ${getIconSVG("checkCircle", `w-5 h-5 mr-3 flex-shrink-0 ${ACCENT_COLOR_CLASSES}`)}
+                                    <span class="text-sm sm:text-base">First-hand experience of our expert teaching methodology.</span>
+                                </div>
+                                <div class="flex items-center text-gray-700">
+                                    ${getIconSVG("checkCircle", `w-5 h-5 mr-3 flex-shrink-0 ${ACCENT_COLOR_CLASSES}`)}
+                                    <span class="text-sm sm:text-base"><strong>Special Offer:</strong> Book a demo and claim your second class free!</span>
+                                </div>
+                            </div>
+                            <p class="mt-8 text-sm text-red-500 font-bold">
+                                *Note: Inquiries will be sent to your email connected with Formspree and stored in your Formspree Dashboard.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-6">Book Your Free Demo Session Now</h3>
+                            <form id="contactForm" class="space-y-6">
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-gray-700">Your Name (Parent/Student)</label>
+                                    <input type="text" id="name" name="name" required placeholder="Jane Doe" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"/>
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700">Email (For Scheduling - Required)</label>
+                                    <input type="email" id="email" name="email" required placeholder="parent@email.com" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"/>
+                                </div>
+                                <div>
+                                    <label for="whatsapp" class="block text-sm font-medium text-gray-700">WhatsApp Number (Optional, for quick communication)</label>
+                                    <input type="tel" id="whatsapp" name="whatsapp" placeholder="+91-XXXXXXXXXX or +1-XXX-XXX-XXXX" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"/>
+                                </div>
+                                <div>
+                                    <label for="message" class="block text-sm font-medium text-gray-700">Subject / Grade Level Inquiry</label>
+                                    <textarea id="message" name="message" rows="4" required placeholder="My child needs help with quadratics in 9th grade (US Common Core)..." class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                                </div>
+                                
+                                <button
+                                    type="submit"
+                                    id="submitButton"
+                                    class="w-full font-bold py-3 px-4 rounded-xl shadow-lg transition duration-300 transform hover:scale-[1.01] ${PRIMARY_COLOR_CLASSES} disabled:opacity-50"
+                                >
+                                    Book My Free Demo & Claim Second Class
+                                </button>
+
+                                <p id="statusMessage" class="mt-4 text-center font-semibold hidden"></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        `;
+
+        const setupContactFormLogic = () => {
+            const form = document.getElementById('contactForm');
+            const submitButton = document.getElementById('submitButton');
+            const statusMessage = document.getElementById('statusMessage');
+
+            const updateStatus = (status, message) => {
+                statusMessage.textContent = message;
+                statusMessage.classList.remove('hidden', 'text-emerald-600', 'text-red-500');
+                if (status === 'submitting') {
+                    statusMessage.textContent = "Inquiry is being sent...";
+                } else if (status === 'success') {
+                    statusMessage.classList.add('text-emerald-600');
+                } else if (status === 'error') {
+                    statusMessage.classList.add('text-red-500');
+                }
+            };
+            
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const data = new FormData(form);
+                const payload = Object.fromEntries(data.entries());
+                
+                submitButton.disabled = true;
+                submitButton.textContent = 'Booking...';
+                updateStatus('submitting', 'Inquiry is being sent...');
+
+                try {
+                    const response = await fetch(FORMSPREE_ENDPOINT, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        updateStatus('success', "Success! Inquiry received. We will email you within 24 hours to schedule.");
+                        form.reset();
+                    } else {
+                        updateStatus('error', "An error occurred. Please ensure your Formspree ID is correct or try using the WhatsApp button above.");
+                        console.error("Formspree submission failed:", response.status);
+                    }
+                } catch (error) {
+                    console.error("Network or submission error: ", error);
+                    updateStatus('error', "An error occurred. Network issue or service connection failed.");
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Book My Free Demo & Claim Second Class';
+                }
+            });
+        };
+
+
+        const renderFooter = () => {
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^\d+]/g, '')}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+            return `
+                <footer class="bg-gray-800 text-white py-8 sm:py-10">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                        <p class="text-lg sm:text-xl font-bold mb-4">${BRAND_NAME} | Academic Specialists</p>
+                        <p class="text-gray-400 mb-4 text-sm">&copy; ${new Date().getFullYear()} All rights reserved. | Providing world-class 1:1 online academic coaching.</p>
+                        
+                        <div class="mt-4 flex flex-wrap justify-center space-x-4">
+                            <a href="mailto:${EMAIL_ID}" class="text-gray-400 hover:text-sky-400 transition duration-300 text-sm">Email: ${EMAIL_ID}</a>
+                            <a 
+                                href="${whatsappUrl}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="flex items-center space-x-1 text-gray-400 hover:text-sky-400 transition duration-300 text-sm"
+                            >
+                                ${getIconSVG("whatsapp", "w-4 h-4")}
+                                <span>WhatsApp: ${WHATSAPP_NUMBER}</span>
+                            </a>
+                        </div>
+                        <div class="mt-4 space-x-4 text-sm">
+                            <a href="#" class="text-gray-400 hover:text-sky-400 transition duration-300">Privacy Policy</a>
+                            <a href="#" class="text-gray-400 hover:text-sky-400 transition duration-300">Terms of Service</a>
+                        </div>
+                    </div>
+                </footer>
+            `;
+        };
+
+        // --- Main App Logic (Initial Render) ---
+        const initApp = () => {
+            const appRoot = document.getElementById('app-root');
+            
+            // Render all sections into the DOM
+            appRoot.innerHTML = `
+                ${renderNavbar()}
+                <main>
+                    ${renderHeroSection()}
+                    ${renderAllSubjectsSection()} ${renderTestimonialsSection()} 
+                    ${renderAboutSection()}
+                    ${renderPricingSection()}
+                    ${renderContactSection()}
+                </main>
+                ${renderFooter()}
+            `;
+
+            // Setup all interactive JavaScript logic
+            setupContactFormLogic();
+        };
+
+        // Run the initialization function when the document is fully loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
