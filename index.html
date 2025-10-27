@@ -69,34 +69,49 @@
         const ACCENT_COLOR_CLASSES = "text-emerald-600";
         const SECONDARY_COLOR_CLASSES = "bg-emerald-500 hover:bg-emerald-600 text-white";
 
-        // --- Team Data ---
+        // --- Team Data (UPDATED for 5 members and local image path) ---
         const TEAM_MEMBERS_DATA = [
             {
                 name: "Dr. Evelyn Reed, Ph.D.",
                 subject: "AP Calculus (AB/BC) & A-Level Maths P3",
                 bio: "With a Doctorate in Applied Mathematics, Dr. Reed specializes in helping students master complex university-level concepts for perfect exam scores.",
                 focus: "Advanced Math, Competitive Exams",
-                // IMAGE INSERTION POINT (1) - Profile Image
-                // Example: imgUrl: "https://example.com/images/dr-reed.jpg"
-                imgUrl: "https://images.unsplash.com/photo-1599305445671-ac91f9798708?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                // IMAGE INSERTION POINT (1) - Profile Image (URL replaced with local path)
+                imgUrl: "imgs/output (8).jpeg" 
             },
             {
                 name: "Mr. David Chen, M.Sc.",
                 subject: "GCSE/IGCSE Physics & AP Physics C",
                 bio: "A former aerospace engineer, David simplifies mechanics, electricity, and magnetism, providing real-world context for exam success in both curricula.",
                 focus: "Physics, Engineering Prep",
-                // IMAGE INSERTION POINT (2) - Profile Image
-                // Example: imgUrl: "https://example.com/images/mr-chen.jpg"
-                imgUrl: "https://images.unsplash.com/photo-1628157579543-c009d1844b20?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                // IMAGE INSERTION POINT (2) - Profile Image (URL replaced with local path)
+                imgUrl: "imgs/output(8).jpeg" 
             },
             {
                 name: "Ms. Anya Sharma, B.E.",
                 subject: "AP/A-Level Chemistry & IB Science",
                 bio: "Anya focuses on building foundational concepts in Organic and Physical Chemistry, turning struggling students into confident grade-achievers.",
                 focus: "Chemistry, Concept Building",
-                // IMAGE INSERTION POINT (3) - Profile Image
-                // Example: imgUrl: "https://example.com/images/ms-sharma.jpg"
-                imgUrl: "https://images.unsplash.com/photo-1582266710714-3864010531e0?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                // IMAGE INSERTION POINT (3) - Profile Image (URL replaced with local path)
+                imgUrl: "imgs/output(8).jpeg" 
+            },
+            // NEW TEACHER 1 ADDED
+            {
+                name: "Prof. Rohan Verma, M.Tech.",
+                subject: "Advanced Computer Science & Algorithms",
+                bio: "An expert in competitive programming, Prof. Verma prepares students for university-level computer science entry tests and coding mastery.",
+                focus: "Coding, Algorithm Design",
+                // IMAGE INSERTION POINT (6) - NEW Profile Image
+                imgUrl: "imgs/output (8).jpg" 
+            },
+            // NEW TEACHER 2 ADDED
+            {
+                name: "Ms. Leena Kaur, B.Ed.",
+                subject: "Primary Education Specialist",
+                bio: "Leena specializes in personalized learning for children (Grade 1-5), focusing on critical thinking and foundational math/literacy skills.",
+                focus: "Primary Literacy, Foundational Math",
+                // IMAGE INSERTION POINT (7) - NEW Profile Image
+                imgUrl: "imgs/output (8).jpg" 
             }
         ];
         
@@ -178,11 +193,13 @@
 
             return `
                 <header class="sticky top-0 z-50 bg-white shadow-lg">
+                    <!-- Top Navigation Bar -->
                     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
                         <div class="text-xl font-extrabold text-sky-600 tracking-tight text-lg sm:text-xl">
                             ${BRAND_NAME} | Global Academic Success
                         </div>
 
+                        <!-- Desktop Nav Links (Visible only on md screens and up) -->
                         <div class="desktop-nav-links space-x-8">
                             ${navItems.map(item => `
                                 <button
@@ -194,12 +211,14 @@
                             `).join('')}
                         </div>
 
+                        <!-- Mobile Menu Button (Hamburger) and Mobile WhatsApp Button -->
                         <div class="mobile-menu-toggle items-center space-x-3">
                             <button id="menu-toggle" onclick="toggleMobileMenu()" class="text-gray-600 hover:text-sky-600 p-2 focus:outline-none">
                                 ${getIconSVG("menu", "w-6 h-6", 'id="menu-icon"')}
                                 ${getIconSVG("x", "w-6 h-6 hidden", 'id="close-icon"')}
                             </button>
-                            <a
+                            <!-- Mobile WhatsApp button (Visible on mobile/tablet up to 768px) -->
+                             <a
                                 href="${whatsappUrl}"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -210,6 +229,7 @@
                             </a>
                         </div>
                         
+                        <!-- Desktop WhatsApp button (Visible only on md screens and up) -->
                         <a
                             href="${whatsappUrl}"
                             target="_blank"
@@ -221,6 +241,7 @@
                         </a>
                     </nav>
 
+                    <!-- Mobile Dropdown Menu -->
                     <div id="mobile-menu" class="sm:hidden bg-white shadow-md border-t border-gray-100">
                         <div class="px-2 pt-2 pb-3 space-y-1">
                             ${navItems.map(item => `
@@ -279,8 +300,11 @@
                         </div>
                         <div class="md:col-start-2 flex justify-center order-first md:order-last">
                             <div class="w-full max-w-sm h-64 bg-sky-200 rounded-2xl shadow-2xl flex items-center justify-center p-6">
-                                ${getIconSVG("globe", "w-20 h-20 text-sky-800 opacity-70")}
-                                <p class="text-xl font-semibold text-sky-800 absolute">Academic Success Graphic</p>
+                                <!-- IMAGE INSERTION POINT (4) - Hero Graphic/Image -->
+                                <!-- REPLACE THIS LINE WITH YOUR IMAGE: -->
+                                <img src="imgs/output (8).jpg" alt="Academic Success Graphic" class="w-full h-full object-cover rounded-2xl shadow-xl"/>
+                                <!-- The paragraph below can be deleted if using a full image -->
+                                <!-- <p class="text-xl font-semibold text-sky-800 absolute">Academic Success Graphic</p> -->
                             </div>
                         </div>
                     </div>
@@ -302,24 +326,32 @@
             return `
                 <section id="subjects" class="py-16 sm:py-20 bg-white">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <!-- PADDING/SIZE ADJUSTMENTS APPLIED -->
                         <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 text-center pt-0 mb-16">
                             Curriculum Expertise: From Foundation to Advanced
                         </h2>
                         
+                        <!-- FIX APPLIED: Foundation Grades is rendered FIRST for main page structure -->
+                        
+                        <!-- FOUNDATION SECTION (GRADE 1-5) -->
                         <div id="foundation-anchor" class="anchor-padding bg-sky-50 p-6 sm:p-8 rounded-2xl shadow-inner mb-12 lg:mb-16">
                             <h3 class="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-2 flex items-center justify-center">
                                 ${getIconSVG("bookOpen", "w-7 h-7 text-sky-600 mr-2")} Primary Academic Foundation (Grade 1-5)
                             </h3>
                             <p class="text-base text-gray-600 text-center mb-6 sm:mb-8 max-w-3xl mx-auto">
-                                **Our Core Expertise:** Building strong foundational concepts in young students (Standard 2nd, 3rd, 4th, 5th) for superior future readiness in any curriculum.
+                               Building strong foundational concepts in young students (Standard 2nd, 3rd, 4th, 5th) for superior future readiness in any curriculum.
                             </p>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
+                                <!-- Icon Color: text-sky-600 (Matching Foundation theme) -->
                                 ${renderServiceCard("feather", "Core Literacy & Reading", "Focusing on phonics, comprehension, vocabulary building, and early writing skills to ensure confidence in all subjects.", "border-emerald-500", "text-sky-600")}
                                 ${renderServiceCard("calculator", "Primary Mathematics Skills", "Mastering number sense, basic arithmetic, problem-solving techniques, and mental math necessary for future success.", "border-emerald-500", "text-sky-600")}
                                 ${renderServiceCard("bookOpen", "General Class Studies Support", "Providing dedicated homework help, revision, and concept reinforcement across all regular school subjects for better preparedness.", "border-emerald-500", "text-sky-600")}
+                                <!-- NEW SUBJECT ADDED -->
+                                ${renderServiceCard("atom", "Introduction to Coding & Logic", "Fun, graphical introductions to computational thinking and basic coding concepts (Scratch, block-based logic) to build problem-solving skills.", "border-emerald-500", "text-sky-600")}
                             </div>
                         </div>
 
+                        <!-- ADVANCED SECTION (GRADE 6+) -->
                         <div id="advanced-anchor" class="anchor-padding p-6 sm:p-8 rounded-2xl shadow-xl border border-gray-100 bg-white">
                              <h3 class="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-2 flex items-center justify-center">
                                 ${getIconSVG("atom", "w-7 h-7 text-emerald-600 mr-2")} Advanced Subject Mastery (Grade 6+)
@@ -327,10 +359,13 @@
                             <p class="text-base text-gray-600 text-center mb-6 sm:mb-8 max-w-3xl mx-auto">
                                 Specialists in advanced subjects for secondary school, IGCSE/GCSE, AP, and A-Level exam excellence.
                             </p>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
+                                <!-- Icon Color: text-emerald-600 (Matching Advanced theme) -->
                                 ${renderServiceCard("calculator", "Advanced Mathematics", "From mastering Algebra 2 and Pre-Calculus to achieving high scores in AP Calculus (AB/BC) and A-Level Maths.", "border-sky-600", "text-emerald-600")}
                                 ${renderServiceCard("atom", "Physics & Chemistry Mastery", "Dedicated support for GCSE/A-Level Sciences, AP Physics (1/2/C), and Advanced Placement Chemistry topics.", "border-sky-600", "text-emerald-600")}
                                 ${renderServiceCard("messageSquare", "Targeted Exam Prep", "Structured programs focused on SAT/ACT Math, final exams, IGCSE/GCSE grade boosting, and competitive college applications.", "border-sky-600", "text-emerald-600")}
+                                <!-- NEW SUBJECT ADDED -->
+                                ${renderServiceCard("globe", "Computer Science & Advanced Coding", "Comprehensive tutoring in CS principles, DSA, Python/Java, and preparation for AP Computer Science or competitive coding challenges.", "border-sky-600", "text-emerald-600")}
                             </div>
                         </div>
                         
@@ -351,6 +386,8 @@
 
         const renderTeamMemberCard = (member) => `
             <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center text-center transition duration-300 hover:shadow-2xl hover:-translate-y-1">
+                <!-- IMAGE INSERTION POINT (5) - Team Member Image -->
+                <!-- Replace src with member.imgUrl or a custom image URL -->
                 <img 
                     src="${member.imgUrl}" 
                     alt="${member.name}" 
@@ -369,6 +406,7 @@
             `
             <section id="team" class="py-16 sm:py-24 bg-white">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- SIZE CHECK: text-4xl sm:text-5xl (Already correct) -->
                     <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 text-center mb-4">
                         Meet Our Academic Specialist Team
                     </h2>
@@ -410,6 +448,7 @@
         const renderTestimonialsSection = () => `
             <section id="results" class="py-16 sm:py-20 bg-gray-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- SIZE ADJUSTMENT: text-4xl sm:text-5xl (Matching 'Curriculum Expertise') -->
                     <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 text-center mb-4">
                         Grade Transformations: Success Stories
                     </h2>
@@ -520,7 +559,7 @@
                                 ${CTA_OFFER}
                             </h2>
                             <p class="text-lg text-gray-600 mb-6 font-bold">
-                                This 45-minute <strong>free demo class</strong> is the perfect way to understand your child's needs and decide the best learning strategy for them.
+                                This 15-minute <strong>free demo class</strong> is the perfect way to understand your child's needs and decide the best learning strategy for them.
                             </p>
                             <div class="space-y-4">
                                 <div class="flex items-center text-gray-700">
@@ -668,7 +707,8 @@
                 ${renderNavbar()}
                 <main>
                     ${renderHeroSection()}
-                    ${renderAllSubjectsSection()} ${renderTestimonialsSection()} 
+                    ${renderAllSubjectsSection()} 
+                    ${renderTestimonialsSection()} 
                     ${renderAboutSection()}
                     ${renderPricingSection()}
                     ${renderContactSection()}
