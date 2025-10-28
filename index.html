@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exalted Mercury - Guaranteed Academic Success</title>
+    <title>A/A* Guaranteed: Online AP, A-Level & GCSE Maths/Science Tutors | Exalted Mercury</title>
+    <meta name="description" content="Get guaranteed A/A* grades! Expert 1:1 online tutoring for AP Calculus, A-Level Maths, GCSE Physics & Chemistry. Specialized coaching for US & UK curricula. Book a Free Demo Class now!">
+    <link rel="canonical" href="[Your Live URL Here]"/>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com" defer></script>
     <style>
         /* Custom scroll behavior for smooth navigation */
         html {
@@ -39,10 +42,10 @@
         /* FIX: Adjusting Anchor Padding specifically for the Contact Form Area on mobile */
         @media (max-width: 767px) {
              #contact-form-area.anchor-padding {
-                /* Reduced anchor margin on small screens for precise scroll jump */
-                padding-top: 1rem;
-                margin-top: -1rem; 
-            }
+                 /* Reduced anchor margin on small screens for precise scroll jump */
+                 padding-top: 1rem;
+                 margin-top: -1rem; 
+             }
         }
         
         /* Style for the dropdown menu on mobile (FIXED: Added opacity) */
@@ -78,7 +81,7 @@
 <body class="min-h-screen bg-white font-sans">
 
     <div id="app-root">
-        </div>
+    </div>
 
     <script>
         // === Configuration & Constants ===
@@ -104,7 +107,6 @@
                 subject: "AP Calculus (AB/BC) & A-Level Maths P3",
                 bio: "With a Doctorate in Applied Mathematics, Dr. Thapa specializes in helping students master complex university-level concepts for perfect exam scores.",
                 focus: "Advanced Math, Biology, Competitive Exams",
-                // IMAGE INSERTION POINT (1) - Profile Image (URL replaced with local path)
                 imgUrl: "imgs/1000203615.jpg" 
             },
             {
@@ -112,7 +114,6 @@
                 subject: "GCSE/IGCSE Physics & AP Physics C",
                 bio: "A former aerospace engineer, David simplifies mechanics, electricity, and magnetism, providing real-world context for exam success in both curricula.",
                 focus: "Physics, Engineering Prep",
-                // IMAGE INSERTION POINT (2) - Profile Image (URL replaced with local path)
                 imgUrl: "imgs/1000205881.jpg" 
             },
             {
@@ -120,7 +121,6 @@
                 subject: "AP/A-Level Chemistry & IB Science",
                 bio: "Neha focuses on building foundational concepts in Organic and Physical Chemistry, turning struggling students into confident grade-achievers.",
                 focus: "Chemistry, Physics, Concept Building",
-                // IMAGE INSERTION POINT (3) - Profile Image (URL replaced with local path)
                 imgUrl: "imgs/1000203613.jpg" 
             },
             // NEW TEACHER 1 ADDED
@@ -129,7 +129,6 @@
                 subject: "Advanced Computer Science & Algorithms",
                 bio: "An expert in competitive programming, Prof. Vi prepares students for university-level computer science entry tests and coding mastery.",
                 focus: "Coding, Algorithm Design",
-                // IMAGE INSERTION POINT (6) - NEW Profile Image
                 imgUrl: "imgs/1000205880.jpg" 
             },
             // NEW TEACHER 2 ADDED
@@ -138,7 +137,6 @@
                 subject: "Primary Education Specialist",
                 bio: "Leena specializes in personalized learning for children (Grade 1-5), focusing on critical thinking and foundational math/literacy skills.",
                 focus: "Primary Literacy, Foundational Math",
-                // IMAGE INSERTION POINT (7) - NEW Profile Image
                 imgUrl: "imgs/1000205879.jpg" 
             }
         ];
@@ -288,7 +286,11 @@
                         
                         <div class="md:col-start-2 flex justify-center order-first md:order-last">
                             <div class="w-full max-w-xs h-48 sm:max-w-sm sm:h-64 md:max-w-sm md:h-64 bg-sky-200 rounded-2xl shadow-2xl flex items-center justify-center p-2 sm:p-6">
-                                <img src="imgs/output (8).jpg" alt="Academic Success Graphic" class="w-full h-full object-cover rounded-2xl shadow-xl"/>
+                                <img 
+                                    src="imgs/output (8).jpg" 
+                                    alt="Student achieving guaranteed A-star grade in AP Calculus and A-Level Maths and Science classes" 
+                                    class="w-full h-full object-cover rounded-2xl shadow-xl"
+                                />
                             </div>
                         </div>
 
@@ -304,10 +306,7 @@
                             </p>
                             <div class="mt-6 flex flex-col sm:flex-row gap-3">
                                 <button
-                                    onclick="
-                                        // Use contact-form-area for all scrolls now
-                                        scrollToSection('contact-form-area'); 
-                                    "
+                                    onclick="scrollToSection('contact-form-area')"
                                     class="flex items-center justify-center font-bold py-3 px-6 text-base rounded-xl shadow-xl transition duration-300 transform hover:scale-105 ${PRIMARY_COLOR_CLASSES}"
                                 >
                                     ${CTA_OFFER.split('&')[0].trim()}
@@ -340,7 +339,7 @@
         const renderServiceCard = (iconName, title, description, borderColorClass, iconColorClass) => `
             <div class="p-6 sm:p-8 bg-white rounded-xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 border-t-4 ${borderColorClass}">
                 ${getIconSVG(iconName, `w-8 h-8 ${iconColorClass} mb-4`)} 
-                <h3 class="text-xl font-bold text-gray-900 mb-3">${title}</h3>
+                <h4 class="text-xl font-bold text-gray-900 mb-3">${title}</h4> 
                 <p class="text-gray-600 text-sm">${description}</p>
             </div>
         `;
@@ -359,7 +358,7 @@
                                 ${getIconSVG("bookOpen", "w-7 h-7 text-sky-600 mr-2")} Primary Academic Foundation (Grade 1-5)
                             </h3>
                             <p class="text-base text-gray-600 text-center mb-6 sm:mb-8 max-w-3xl mx-auto">
-                               Building strong foundational concepts in young students (Standard 2nd, 3rd, 4th, 5th) for superior future readiness in any curriculum.
+                                Building strong foundational concepts in young students (Standard 2nd, 3rd, 4th, 5th) for superior future readiness in any curriculum.
                             </p>
                             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
                                 ${renderServiceCard("atom", "Advanced Primary Science Foundation", "Focusing on Essential Science, Biology, and Environmental Studies to build strong scientific inquiry and observation skills early on. Crucial for long-term confidence.", "border-emerald-500", "text-sky-600")}
@@ -403,7 +402,7 @@
             <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center text-center transition duration-300 hover:shadow-2xl hover:-translate-y-1">
                 <img 
                     src="${member.imgUrl}" 
-                    alt="${member.name}" 
+                    alt="Expert tutor ${member.name} specialized in ${member.subject}" 
                     class="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-full shadow-lg mb-4 border-4 border-sky-200"
                     onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,${encodeURIComponent(getIconSVG('user', 'w-32 h-32 text-gray-400'))}'"
                 />
@@ -602,7 +601,7 @@
 
                         <div id="contact-form-area" class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl anchor-padding">
                             <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-6">Book Your Free Demo Session Now</h3>
-                            <form id="contactForm" class="space-y-6">
+                            <form id="contactForm" class="space-y-6" aria-label="Book a Free Demo Class">
                                 <div>
                                     <label for="name" class="block text-sm font-medium text-gray-700">Your Name (Parent/Student)</label>
                                     <input type="text" id="name" name="name" required placeholder="Jane Doe" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"/>
@@ -653,7 +652,6 @@
                 }
             };
             
-
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
