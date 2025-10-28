@@ -31,9 +31,20 @@
         
         /* Ensure anchors work well under sticky header */
         .anchor-padding {
-            padding-top: 4rem; /* Adjusted for sticky header height */
+            /* Adjusted padding to account for sticky header height */
+            padding-top: 4rem; 
             margin-top: -4rem; 
         }
+
+        /* FIX: Adjusting Anchor Padding specifically for the Contact Form Area on mobile */
+        @media (max-width: 767px) {
+             #contact-form-area.anchor-padding {
+                /* Reduced anchor margin on small screens for precise scroll jump */
+                padding-top: 1rem;
+                margin-top: -1rem; 
+            }
+        }
+        
         /* Style for the dropdown menu on mobile (FIXED: Added opacity) */
         #mobile-menu {
             transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
@@ -45,6 +56,23 @@
             max-height: 400px; /* Sufficient height to show all links */
             opacity: 1; /* Shows menu when open */
         }
+
+        /* === NEW CSS FOR RESPONSIVE CHANGES (Requirement 2) === */
+        /* Shrink brand text and adjust padding on small screens (< 768px) */
+        @media (max-width: 767px) {
+            .brand-text-mobile-shrink {
+                /* Reduce the font size slightly for better fit */
+                font-size: 0.9rem; 
+                /* Adjust padding to prevent spill-over */
+                padding-left: 0.5rem; 
+                padding-right: 0.5rem; 
+            }
+            .brand-text-mobile-shrink span {
+                /* Shrink 'Global Academic Success' */
+                font-size: 0.8rem; 
+            }
+        }
+        /* ======================================================= */
     </style>
 </head>
 <body class="min-h-screen bg-white font-sans">
@@ -85,7 +113,7 @@
                 bio: "A former aerospace engineer, David simplifies mechanics, electricity, and magnetism, providing real-world context for exam success in both curricula.",
                 focus: "Physics, Engineering Prep",
                 // IMAGE INSERTION POINT (2) - Profile Image (URL replaced with local path)
-                imgUrl: "imgs/output(8).jpeg" 
+                imgUrl: "imgs/1000205881.jpg" 
             },
             {
                 name: "Ms. Neha Rawat, B.Sc.",
@@ -97,21 +125,21 @@
             },
             // NEW TEACHER 1 ADDED
             {
-                name: "Prof. Rohan Verma, M.Tech.",
+                name: "Prof. Deiana Vi., M.Tech.",
                 subject: "Advanced Computer Science & Algorithms",
-                bio: "An expert in competitive programming, Prof. Verma prepares students for university-level computer science entry tests and coding mastery.",
+                bio: "An expert in competitive programming, Prof. Vi prepares students for university-level computer science entry tests and coding mastery.",
                 focus: "Coding, Algorithm Design",
                 // IMAGE INSERTION POINT (6) - NEW Profile Image
-                imgUrl: "imgs/output (8).jpg" 
+                imgUrl: "imgs/1000205880.jpg" 
             },
             // NEW TEACHER 2 ADDED
             {
-                name: "Ms. Leena Kaur, B.Ed.",
+                name: "Ms. Leena Scholes, B.Ed.",
                 subject: "Primary Education Specialist",
                 bio: "Leena specializes in personalized learning for children (Grade 1-5), focusing on critical thinking and foundational math/literacy skills.",
                 focus: "Primary Literacy, Foundational Math",
                 // IMAGE INSERTION POINT (7) - NEW Profile Image
-                imgUrl: "imgs/output (8).jpg" 
+                imgUrl: "imgs/1000205879.jpg" 
             }
         ];
         
@@ -193,13 +221,11 @@
 
             return `
                 <header class="sticky top-0 z-50 bg-white shadow-lg">
-                    <!-- Top Navigation Bar -->
                     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
-                        <div class="text-xl font-extrabold text-sky-600 tracking-tight text-lg sm:text-xl">
-                            ${BRAND_NAME} | Global Academic Success
+                        <div class="text-xl font-extrabold text-sky-600 tracking-tight text-lg sm:text-xl brand-text-mobile-shrink">
+                            ${BRAND_NAME} | <span class="md:inline">Global Academic Success</span>
                         </div>
 
-                        <!-- Desktop Nav Links (Visible only on md screens and up) -->
                         <div class="desktop-nav-links space-x-8">
                             ${navItems.map(item => `
                                 <button
@@ -211,25 +237,22 @@
                             `).join('')}
                         </div>
 
-                        <!-- Mobile Menu Button (Hamburger) and Mobile WhatsApp Button -->
                         <div class="mobile-menu-toggle items-center space-x-3">
                             <button id="menu-toggle" onclick="toggleMobileMenu()" class="text-gray-600 hover:text-sky-600 p-2 focus:outline-none">
                                 ${getIconSVG("menu", "w-6 h-6", 'id="menu-icon"')}
                                 ${getIconSVG("x", "w-6 h-6 hidden", 'id="close-icon"')}
                             </button>
-                            <!-- Mobile WhatsApp button (Visible on mobile/tablet up to 768px) -->
                              <a
-                                href="${whatsappUrl}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="flex items-center space-x-1 font-semibold py-2 px-3 rounded-xl shadow-lg transition duration-300 bg-emerald-500 hover:bg-emerald-600 text-white text-xs"
-                            >
-                                ${getIconSVG("whatsapp", "w-4 h-4")}
-                                <span>Chat</span>
-                            </a>
+                                 href="${whatsappUrl}"
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 class="flex items-center space-x-1 font-semibold py-2 px-3 rounded-xl shadow-lg transition duration-300 bg-emerald-500 hover:bg-emerald-600 text-white text-xs"
+                             >
+                                 ${getIconSVG("whatsapp", "w-4 h-4")}
+                                 <span>Chat</span>
+                             </a>
                         </div>
                         
-                        <!-- Desktop WhatsApp button (Visible only on md screens and up) -->
                         <a
                             href="${whatsappUrl}"
                             target="_blank"
@@ -241,7 +264,6 @@
                         </a>
                     </nav>
 
-                    <!-- Mobile Dropdown Menu -->
                     <div id="mobile-menu" class="sm:hidden bg-white shadow-md border-t border-gray-100">
                         <div class="px-2 pt-2 pb-3 space-y-1">
                             ${navItems.map(item => `
@@ -263,7 +285,14 @@
             return `
                 <section id="home" class="pt-20 pb-16 bg-gray-50">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
-                        <div>
+                        
+                        <div class="md:col-start-2 flex justify-center order-first md:order-last">
+                            <div class="w-full max-w-xs h-48 sm:max-w-sm sm:h-64 md:max-w-sm md:h-64 bg-sky-200 rounded-2xl shadow-2xl flex items-center justify-center p-2 sm:p-6">
+                                <img src="imgs/output (8).jpg" alt="Academic Success Graphic" class="w-full h-full object-cover rounded-2xl shadow-xl"/>
+                            </div>
+                        </div>
+
+                        <div class="md:col-start-1">
                             <span class="font-semibold uppercase tracking-wider text-sm ${ACCENT_COLOR_CLASSES}">
                                 World-Class 1:1 Maths & Science Coaching
                             </span>
@@ -275,7 +304,10 @@
                             </p>
                             <div class="mt-6 flex flex-col sm:flex-row gap-3">
                                 <button
-                                    onclick="scrollToSection('contact')"
+                                    onclick="
+                                        // Use contact-form-area for all scrolls now
+                                        scrollToSection('contact-form-area'); 
+                                    "
                                     class="flex items-center justify-center font-bold py-3 px-6 text-base rounded-xl shadow-xl transition duration-300 transform hover:scale-105 ${PRIMARY_COLOR_CLASSES}"
                                 >
                                     ${CTA_OFFER.split('&')[0].trim()}
@@ -298,15 +330,7 @@
                                 <span class="font-semibold">Over 90% of students achieve a 2-grade increase.</span>
                             </div>
                         </div>
-                        <div class="md:col-start-2 flex justify-center order-first md:order-last">
-                            <div class="w-full max-w-sm h-64 bg-sky-200 rounded-2xl shadow-2xl flex items-center justify-center p-6">
-                                <!-- IMAGE INSERTION POINT (4) - Hero Graphic/Image -->
-                                <!-- REPLACE THIS LINE WITH YOUR IMAGE: -->
-                                <img src="imgs/output (8).jpg" alt="Academic Success Graphic" class="w-full h-full object-cover rounded-2xl shadow-xl"/>
-                                <!-- The paragraph below can be deleted if using a full image -->
-                                <!-- <p class="text-xl font-semibold text-sky-800 absolute">Academic Success Graphic</p> -->
-                            </div>
-                        </div>
+
                     </div>
                 </section>
             `;
@@ -326,14 +350,10 @@
             return `
                 <section id="subjects" class="py-16 sm:py-20 bg-white">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <!-- PADDING/SIZE ADJUSTMENTS APPLIED -->
                         <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 text-center pt-0 mb-16">
                             Curriculum Expertise: From Foundation to Advanced
                         </h2>
                         
-                        <!-- FIX APPLIED: Foundation Grades is rendered FIRST for main page structure -->
-                        
-                        <!-- FOUNDATION SECTION (GRADE 1-5) -->
                         <div id="foundation-anchor" class="anchor-padding bg-sky-50 p-6 sm:p-8 rounded-2xl shadow-inner mb-12 lg:mb-16">
                             <h3 class="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-2 flex items-center justify-center">
                                 ${getIconSVG("bookOpen", "w-7 h-7 text-sky-600 mr-2")} Primary Academic Foundation (Grade 1-5)
@@ -342,36 +362,31 @@
                                Building strong foundational concepts in young students (Standard 2nd, 3rd, 4th, 5th) for superior future readiness in any curriculum.
                             </p>
                             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
-                                <!-- Icon Color: text-sky-600 (Matching Foundation theme) -->
-                                ${renderServiceCard("feather", "Core Literacy & Reading", "Focusing on phonics, comprehension, vocabulary building, and early writing skills to ensure confidence in all subjects.", "border-emerald-500", "text-sky-600")}
+                                ${renderServiceCard("atom", "Advanced Primary Science Foundation", "Focusing on Essential Science, Biology, and Environmental Studies to build strong scientific inquiry and observation skills early on. Crucial for long-term confidence.", "border-emerald-500", "text-sky-600")}
                                 ${renderServiceCard("calculator", "Primary Mathematics Skills", "Mastering number sense, basic arithmetic, problem-solving techniques, and mental math necessary for future success.", "border-emerald-500", "text-sky-600")}
-                                ${renderServiceCard("bookOpen", "General Class Studies Support", "Providing dedicated homework help, revision, and concept reinforcement across all regular school subjects for better preparedness.", "border-emerald-500", "text-sky-600")}
-                                <!-- NEW SUBJECT ADDED -->
-                                ${renderServiceCard("atom", "Introduction to Coding & Logic", "Fun, graphical introductions to computational thinking and basic coding concepts (Scratch, block-based logic) to build problem-solving skills.", "border-emerald-500", "text-sky-600")}
+                                ${renderServiceCard("bookOpen", "General Studies & Core Literacy", "Dedicated homework help, revision, concept reinforcement, and improving core literacy, comprehension, and writing skills.", "border-emerald-500", "text-sky-600")}
+                                ${renderServiceCard("globe", "Introduction to Coding & Logic", "Fun, graphical introductions to computational thinking and basic coding concepts (Scratch, block-based logic) to build problem-solving skills.", "border-emerald-500", "text-sky-600")}
                             </div>
                         </div>
 
-                        <!-- ADVANCED SECTION (GRADE 6+) -->
                         <div id="advanced-anchor" class="anchor-padding p-6 sm:p-8 rounded-2xl shadow-xl border border-gray-100 bg-white">
                              <h3 class="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-2 flex items-center justify-center">
-                                ${getIconSVG("atom", "w-7 h-7 text-emerald-600 mr-2")} Advanced Subject Mastery (Grade 6+)
+                                 ${getIconSVG("atom", "w-7 h-7 text-emerald-600 mr-2")} Advanced Subject Mastery (Grade 6+)
                             </h3>
                             <p class="text-base text-gray-600 text-center mb-6 sm:mb-8 max-w-3xl mx-auto">
                                 Specialists in advanced subjects for secondary school, IGCSE/GCSE, AP, and A-Level exam excellence.
                             </p>
                             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
-                                <!-- Icon Color: text-emerald-600 (Matching Advanced theme) -->
                                 ${renderServiceCard("calculator", "Advanced Mathematics", "From mastering Algebra 2 and Pre-Calculus to achieving high scores in AP Calculus (AB/BC) and A-Level Maths.", "border-sky-600", "text-emerald-600")}
                                 ${renderServiceCard("atom", "Physics & Chemistry Mastery", "Dedicated support for GCSE/A-Level Sciences, AP Physics (1/2/C), and Advanced Placement Chemistry topics.", "border-sky-600", "text-emerald-600")}
                                 ${renderServiceCard("messageSquare", "Targeted Exam Prep", "Structured programs focused on SAT/ACT Math, final exams, IGCSE/GCSE grade boosting, and competitive college applications.", "border-sky-600", "text-emerald-600")}
-                                <!-- NEW SUBJECT ADDED -->
                                 ${renderServiceCard("globe", "Computer Science & Advanced Coding", "Comprehensive tutoring in CS principles, DSA, Python/Java, and preparation for AP Computer Science or competitive coding challenges.", "border-sky-600", "text-emerald-600")}
                             </div>
                         </div>
                         
                         <div class="text-center mt-10 sm:mt-16">
                             <button
-                                onclick="scrollToSection('contact')"
+                                onclick="scrollToSection('contact-form-area')"
                                 class="inline-flex items-center justify-center font-bold py-3 px-6 text-base rounded-xl shadow-xl transition duration-300 transform hover:scale-105 ${SECONDARY_COLOR_CLASSES}"
                             >
                                 Contact Us for Tailored Subject Matching
@@ -386,8 +401,6 @@
 
         const renderTeamMemberCard = (member) => `
             <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center text-center transition duration-300 hover:shadow-2xl hover:-translate-y-1">
-                <!-- IMAGE INSERTION POINT (5) - Team Member Image -->
-                <!-- Replace src with member.imgUrl or a custom image URL -->
                 <img 
                     src="${member.imgUrl}" 
                     alt="${member.name}" 
@@ -406,7 +419,6 @@
             `
             <section id="team" class="py-16 sm:py-24 bg-white">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <!-- SIZE CHECK: text-4xl sm:text-5xl (Already correct) -->
                     <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 text-center mb-4">
                         Meet Our Academic Specialist Team
                     </h2>
@@ -422,7 +434,7 @@
                             <h4 class="text-2xl font-bold text-sky-900 mb-2">Join Our Expert Roster</h4>
                             <p class="text-sky-700 mb-6">All our 10+ tutors are subject matter experts, vetted for curriculum knowledge and teaching excellence.</p>
                             <button
-                                onclick="scrollToSection('contact')"
+                                onclick="scrollToSection('contact-form-area')"
                                 class="mt-auto font-semibold py-3 px-6 rounded-full shadow-lg transition duration-300 ${SECONDARY_COLOR_CLASSES}"
                             >
                                 Get Matched with a Specialist
@@ -434,21 +446,34 @@
             `
         );
 
+        // CHANGE: Simplified and enhanced testimonial card for better visual impact and readability (larger text)
         const renderTestimonialCard = (quote, name, subject) => `
-            <div class="p-6 bg-white rounded-xl shadow-lg border border-gray-100 h-full flex flex-col">
-                ${getIconSVG("messageSquare", "w-8 h-8 text-sky-400 mb-4")}
-                <p class="text-gray-700 italic flex-grow text-sm">"${quote}"</p>
-                <div class="mt-4 pt-4 border-t border-gray-100">
-                    <p class="font-semibold text-gray-900">${name}</p>
-                    <p class="text-sm ${ACCENT_COLOR_CLASSES}">${subject}</p>
+            <div class="p-6 bg-white rounded-xl shadow-lg border-l-4 border-sky-500 h-full flex flex-col hover:shadow-xl transition duration-300">
+                <blockquote class="text-gray-700 italic flex-grow text-lg leading-relaxed mb-4">
+                    ${getIconSVG("messageSquare", "w-5 h-5 text-sky-400 inline mr-2 align-text-top")}
+                    "${quote}"
+                </blockquote>
+                <div class="pt-3 border-t border-gray-100">
+                    <p class="font-bold text-gray-900">${name}</p>
+                    <p class="text-base font-medium ${ACCENT_COLOR_CLASSES}">${subject}</p>
                 </div>
             </div>
         `;
 
+        const renderTestimonialsData = () => [
+            // CHANGE: Removed double stars (**) for bolding. Text looks cleaner.
+            renderTestimonialCard("The personalized focus by Exalted Mercury on A-Level Physics concepts was phenomenal. My daughter secured an A* and got into her first-choice university.", "Mr. Stevens", "Parent, Bristol, UK (A-Level Physics)"),
+            renderTestimonialCard("My son was scoring a 3 on his AP Calculus exams. After a month of targeted tutoring with Exalted Mercury, he scored a 5! Truly exceptional.", "Sarah K.", "Parent, Texas, USA (AP Calculus AB)"),
+            renderTestimonialCard("The foundational lessons in basic math and science were a game-changer for my 4th grader. He is now much more confident in class.", "Leila A.", "Parent, Dubai (Junior Maths & Science)"),
+            renderTestimonialCard("I finally understood Organic Chemistry. The tutor at Exalted Mercury broke down the reactions step-by-step. My grade went from a C to a B+.", "Aisha F.", "High School Student, New York, USA (AP Chemistry)"),
+            renderTestimonialCard("We needed help preparing for the SAT Math section. The strategic approach was excellent, resulting in a near-perfect score.", "Ben C.", "Student, California, USA (SAT Math)"),
+            renderTestimonialCard("The intensive prep for A-Level Maths P3 was invaluable. The deep subject knowledge of the Exalted Mercury tutor was clear in every session.", "Jasmine R.", "A-Level Student, Birmingham, UK (A-Level Maths)"),
+        ].join('');
+
+
         const renderTestimonialsSection = () => `
             <section id="results" class="py-16 sm:py-20 bg-gray-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <!-- SIZE ADJUSTMENT: text-4xl sm:text-5xl (Matching 'Curriculum Expertise') -->
                     <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 text-center mb-4">
                         Grade Transformations: Success Stories
                     </h2>
@@ -456,12 +481,7 @@
                         Achieving excellence is our standard. Read what families in the US and UK say about our impact.
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                        ${renderTestimonialCard("The personalized focus on A-Level Physics concepts was phenomenal. My daughter secured an A* and got into her first-choice university.", "Mr. Stevens", "Parent, Bristol, UK (A-Level Physics)")}
-                        ${renderTestimonialCard("My son was scoring a 3 on his AP Calculus exams. After a month of targeted tutoring, he scored a 5! Truly exceptional.", "Sarah K.", "Parent, Texas, USA (AP Calculus AB)")}
-                        ${renderTestimonialCard("I finally understood Organic Chemistry. The tutor broke down the reactions step-by-step. My grade went from a C to a B+.", "Aisha F.", "High School Student, New York, USA (AP Chemistry)")}
-                        ${renderTestimonialCard("They are specialists in the new GCSE Math curriculum. My child's confidence soared, resulting in a crucial Grade 8.", "David M.", "Parent, London, UK (GCSE Mathematics)")}
-                        ${renderTestimonialCard("We needed help preparing for the SAT Math section. The strategic approach was excellent, resulting in a near-perfect score.", "Ben C.", "Student, California, USA (SAT Math)")}
-                        ${renderTestimonialCard("The intensive prep for A-Level Maths P3 was invaluable. The deep subject knowledge of the tutor was clear in every session.", "Jasmine R.", "A-Level Student, Birmingham, UK (A-Level Maths)")}
+                        ${renderTestimonialsData()}
                     </div>
                 </div>
             </section>
@@ -492,7 +512,7 @@
                                 </ul>
                             </div>
                             <button
-                                onclick="scrollToSection('contact')"
+                                onclick="scrollToSection('contact-form-area')"
                                 class="mt-8 w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 rounded-xl transition duration-300"
                             >
                                 Book Now
@@ -514,7 +534,7 @@
                                 <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Dedicated Q&A support</span></li>
                             </ul>
                             <button
-                                onclick="scrollToSection('contact')"
+                                onclick="scrollToSection('contact-form-area')"
                                 class="mt-8 w-full font-bold py-3 rounded-xl shadow-lg transition duration-300 ${PRIMARY_COLOR_CLASSES}"
                             >
                                 Secure Your Spot
@@ -528,14 +548,14 @@
                                 <p class="text-4xl font-extrabold text-sky-600 mb-6">
                                     $15 <span class="text-lg text-gray-500 font-normal">/ hour (volume discount)</span>
                                 </p>
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span><span class="font-semibold">15-hour block</span> booking</span></li>
-                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Timed practice tests & grading</span></li>
-                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>1-on-1 feedback on mock exams</span></li>
-                                </ul>
                             </div>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span><span class="font-semibold">15-hour block</span> booking</span></li>
+                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Timed practice tests & grading</span></li>
+                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>1-on-1 feedback on mock exams</span></li>
+                            </ul>
                             <button
-                                onclick="scrollToSection('contact')"
+                                onclick="scrollToSection('contact-form-area')"
                                 class="mt-8 w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 rounded-xl transition duration-300"
                             >
                                 Target Your Grade
@@ -580,7 +600,7 @@
                             </p>
                         </div>
 
-                        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
+                        <div id="contact-form-area" class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl anchor-padding">
                             <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-6">Book Your Free Demo Session Now</h3>
                             <form id="contactForm" class="space-y-6">
                                 <div>
