@@ -261,4 +261,43 @@
                         </div>
 
                         <!-- Button uses 'flex w-full sm:w-auto' to ensure visibility on mobile -->
-                   
+                        <a href="mailto:exaltedmercuryteam@gmail.com?subject=Application%20–%20Operations%20%26%20Community%20Catalyst" class="mt-4 flex w-full sm:w-auto items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300 transform hover:scale-[1.02]">
+                            Apply Now (Auto Mail)
+                            <i data-lucide="mail" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    
+    <!-- JavaScript for Accordion Dropdown -->
+    <script>
+        // Initialize Lucide Icons after content is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+
+        function toggleJob(jobId) {
+            const content = document.getElementById('job-' + jobId + '-content');
+            const iconContainer = document.getElementById('icon-' + jobId);
+            
+            // Toggle the 'active' class on content and icon container
+            content.classList.toggle('active');
+            iconContainer.classList.toggle('active');
+
+            // Find the current icon SVG and remove it
+            iconContainer.innerHTML = '';
+            
+            // Set the new icon name on the container
+            const newIcon = content.classList.contains('active') ? 'chevron-up' : 'chevron-down';
+            iconContainer.setAttribute('data-lucide', newIcon);
+            
+            // Re-render the icon
+            // We pass the container to render only the new icon efficiently
+            lucide.createIcons({ container: iconContainer });
+        }
+    </script>
+</body>
+</html>
