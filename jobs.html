@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Career Opportunities - Exalted Mercury</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons for a professional look -->
@@ -52,7 +51,7 @@
 </head>
 <body class="bg-gray-100 font-sans min-h-screen">
 
-    <!-- Sticky Header (NEW: Blue to Green Gradient) -->
+    <!-- Sticky Header (Blue to Green Gradient) -->
     <header class="bg-gradient-to-r from-indigo-600 to-emerald-600 shadow-lg sticky top-0 z-10">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2 brand-text-mobile-shrink">
@@ -61,7 +60,8 @@
                     <span class="block text-xs font-normal text-indigo-200">Global Academic Success</span>
                 </h1>
             </div>
-            <a href="www.exaltedmercury.com" target="_blank" class="text-indigo-200 hover:text-white transition duration-300 font-medium text-sm md:text-base px-3 py-1 rounded-full border border-indigo-200 hover:bg-indigo-700">
+            <!-- FIX: Changed href to absolute URL (https://) -->
+            <a href="https://www.exaltedmercury.com" target="_blank" class="text-indigo-200 hover:text-white transition duration-300 font-medium text-sm md:text-base px-3 py-1 rounded-full border border-indigo-200 hover:bg-indigo-700">
                 Visit Website
             </a>
         </div>
@@ -93,7 +93,7 @@
                             <p class="text-md text-gray-500 mt-1 font-medium">Remote | Commission-Based | Highest Earning Potential</p>
                         </div>
                     </div>
-                    <!-- FIX: Moved data-lucide and size classes to span, removed <i> tag -->
+                    <!-- Icon setup for toggle -->
                     <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-1" data-lucide="chevron-down"></span>
                 </button>
                 <div id="job-1-content" class="job-content bg-indigo-50/20">
@@ -161,7 +161,7 @@
                             <p class="text-md text-gray-500 mt-1 font-medium">UK/US Curriculum | Remote | Night Shifts (IST)</p>
                         </div>
                     </div>
-                    <!-- FIX: Moved data-lucide and size classes to span, removed <i> tag -->
+                    <!-- Icon setup for toggle -->
                     <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-2" data-lucide="chevron-down"></span>
                 </button>
                 <div id="job-2-content" class="job-content bg-emerald-50/20">
@@ -221,7 +221,7 @@
                             <p class="text-md text-gray-500 mt-1 font-medium">Coordination | Strategy | Full-Time (Dehradun/Remote)</p>
                         </div>
                     </div>
-                    <!-- FIX: Moved data-lucide and size classes to span, removed <i> tag -->
+                    <!-- Icon setup for toggle -->
                     <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-3" data-lucide="chevron-down"></span>
                 </button>
                 <div id="job-3-content" class="job-content bg-blue-50/20">
@@ -261,43 +261,4 @@
                         </div>
 
                         <!-- Button uses 'flex w-full sm:w-auto' to ensure visibility on mobile -->
-                        <a href="mailto:exaltedmercuryteam@gmail.com?subject=Application%20–%20Operations%20%26%20Community%20Catalyst" class="mt-4 flex w-full sm:w-auto items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300 transform hover:scale-[1.02]">
-                            Apply Now (Auto Mail)
-                            <i data-lucide="mail" class="w-4 h-4 ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    </main>
-    
-    <!-- JavaScript for Accordion Dropdown -->
-    <script>
-        // Initialize Lucide Icons after content is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-        });
-
-        function toggleJob(jobId) {
-            const content = document.getElementById('job-' + jobId + '-content');
-            const iconContainer = document.getElementById('icon-' + jobId);
-            
-            // Toggle the 'active' class on content and icon container
-            content.classList.toggle('active');
-            iconContainer.classList.toggle('active');
-
-            // Find the current icon SVG and remove it
-            iconContainer.innerHTML = '';
-            
-            // Set the new icon name on the container
-            const newIcon = content.classList.contains('active') ? 'chevron-up' : 'chevron-down';
-            iconContainer.setAttribute('data-lucide', newIcon);
-            
-            // Re-render the icon
-            // We pass the container to render only the new icon efficiently
-            lucide.createIcons({ container: iconContainer });
-        }
-    </script>
-</body>
-</html>
+                   
