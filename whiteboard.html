@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowBoard - Infinite Canvas</title>
+    <style>
+        /* --- CORE STYLES --- */
+        :root {
+            --primary: #6366f1; /* Modern Indigo */
+            --primary-bg: #eef2ff;
+            --panel-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --border: #e5e7eb;
+            --text: #1f2937;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f9fafb;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            color: var(--text);
+        }
+
+        /* --- LAYERS --- */
+        #app-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            touch-action: none;
+        }
+
+        /* Text Layer covers the same area but allows clicks to pass through to canvas unless hitting text */
+        #text-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none; /* Let clicks pass to canvas */
+            overflow: hidden;
+        }
+
+        /* Editable Text Box */
+        .text-box {
+            position: absolute;
+            min-width: 50px;
+            min-height: 20px;
+            padding: 5px 10px;
+            border: 1px solid transparent;
+            outline: none;
+            background: transparent;
+            pointer-events: auto; /* Catch clicks on text */
+            cursor: text;
+            white-space: pre-wrap;
+            transition: border 0.2s;
+            border-radius: 4px;
+        }
+
+        .text-box:hover { border: 1px dashed #ccc; background: rgba(255,255,255,0.5); }
+        .text-box:focus { 
+            border: 2px solid var(--primary); 
+            background: white; 
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        /* --- CURSORS --- */
+        .cursor-pen { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path></svg>') 0 24, auto; }
+        .cursor-eraser { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><circle cx="12" cy="12" r="10" fill="white" fill-opacity="0.8"/></svg>') 12 12, auto; }
+        .cursor-crosshair { cursor: crosshair; }
+
+        /* --- UI TOOLBARS --- */
+        
+        /* Top Properties Bar */
+        .top-bar {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--panel-bg);
+            backdrop-filter: blur(8px);
+            padding: 8px 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 100;
+            border: 1px solid var(--border);
+        }
+
+        .prop-group { display: flex; align-items: center; gap: 10px; }
+        .divider { width: 1px; height: 24px; background: #ddd; }
+
+        .btn-icon {
+            background: transparent; border: none; cursor: pointer; font-size: 18px; padding: 6px;
+            border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #555;
+        }
+        .btn-icon:hover { background: #f3f4f6; color: var(--primary); }
+        .btn-icon.active { background: var(--primary-bg); color: var(--primary); }
+
+        input[type="color"] { width: 30px; height: 30px; border: none; background: none; cursor: pointer; }
+        
+        /* Left Tools */
+        .toolbar {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--panel-bg);
+            padding: 12px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+            border: 1px solid var(--border);
+        }
+
+        .tool-btn {
+            width: 42px; height: 42px; border: none; background: transparent;
+            border-radius: 10px; cursor: pointer; font-size: 20px; color: #666;
+            transition: 0.2s;
+        }
+        .tool-btn:hover { background: var(--primary-bg); color: var(--primary); }
+        .tool-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(99, 102, 241, 0.4); }
+
+        /* Badge */
+        .badge-wrap { position: relative; }
+        .badge { position: absolute; top: -4px; right: -4px; background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
+
+        /* Sheets */
+        .sheets-bar {
+            position: absolute; bottom: 20px; left: 20px;
+            display: flex; gap: 8px; z-index: 100;
+        }
+        .sheet-tab {
+            background: var(--panel-bg); padding: 8px 20px; border-radius: 8px;
+            border: 1px solid var(--border); cursor: pointer; font-weight: 500; color: #555;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .sheet-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Context Menu for Text (Visible when text is focused) */
+        #text-controls {
+            display: none;
+            margin-left: 10px;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <canvas id="canvas"></canvas>
+        <div id="text-layer"></div>
+    </div>
+
+    <div class="top-bar">
+        <div class="prop-group">
+            <input type="color" id="colorPicker" value="#000000" title="Color">
+            <input type="range" id="sizeSlider" min="1" max="40" value="3" style="width: 80px" title="Size">
+        </div>
+        
+        <div class="divider"></div>
+
+        <div class="prop-group" id="text-format-group">
+            <button class="btn-icon" id="fmt-bold" title="Bold"><b>B</b></button>
+            <button class="btn-icon" id="fmt-italic" title="Italic"><i>I</i></button>
+            <button class="btn-icon" id="fmt-underline" title="Underline"><u>U</u></button>
+            <button class="btn-icon" id="fmt-delete" title="Delete Selected" style="color:red;">🗑️</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="prop-group">
+            <button class="btn-icon" id="undoBtn" title="Undo Drawing">↩</button>
+            <button class="btn-icon" id="clearBtn" title="Clear Page">✨</button>
+            <button class="btn-icon" id="saveBtn" title="Download Image">💾</button>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <button class="tool-btn active" id="tool-pencil" title="Freehand">✏️</button>
+        <button class="tool-btn" id="tool-text" title="Text Box (Click to add, Click to edit)">T</button>
+        
+        <div class="badge-wrap">
+            <button class="tool-btn" id="tool-number" title="Auto Numbering">🔢</button>
+            <div id="counterBadge" class="badge">1</div>
+        </div>
+        
+        <div style="height: 1px; background: #eee; margin: 5px 0;"></div>
+        
+        <button class="tool-btn" id="tool-line" title="Line">📏</button>
+        <button class="tool-btn" id="tool-rect" title="Rectangle">⬜</button>
+        <button class="tool-btn" id="tool-circle" title="Circle">⭕</button>
+        <button class="tool-btn" id="tool-eraser" title="Eraser">🧹</button>
+    </div>
+
+    <div class="sheets-bar" id="sheetsBar">
+        <div class="sheet-tab active" data-id="1">Page 1</div>
+        <div class="sheet-tab" id="addSheetBtn" style="padding: 8px 12px;">+</div>
+    </div>
+
+    <script>
+        // --- APP STATE ---
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const textLayer = document.getElementById('text-layer');
+
+        let app = {
+            tool: 'pencil',
+            painting: false,
+            color: '#000000',
+            size: 3,
+            startX: 0, startY: 0,
+            counter: 1,
+            activeText: null, // currently focused text box
+            activeSheet: 1,
+            sheets: {
+                1: { history: [], step: -1, imgData: null, textNodes: [] } // textNodes stores HTML strings or configs
+            }
+        };
+
+        // --- INITIALIZATION ---
+        function resize() {
+            // Preserve content on resize
+            let temp = ctx.getImageData(0,0,canvas.width, canvas.height);
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            ctx.putImageData(temp, 0, 0);
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // --- CURSOR & TOOL MANAGMENT ---
+        const tools = document.querySelectorAll('.tool-btn');
+        const updateCursor = () => {
+            canvas.className = '';
+            if (app.tool === 'pencil') canvas.classList.add('cursor-pen');
+            else if (app.tool === 'eraser') canvas.classList.add('cursor-eraser');
+            else if (['rect', 'circle', 'line', 'number'].includes(app.tool)) canvas.classList.add('cursor-crosshair');
+        };
+
+        tools.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tools.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                app.tool = btn.id.replace('tool-', '');
+                updateCursor();
+                
+                // Deselect text if switching tools
+                if(app.activeText) app.activeText.blur();
+            });
+        });
+        updateCursor();
+
+        // Property Listeners
+        const colorPicker = document.getElementById('colorPicker');
+        const sizeSlider = document.getElementById('sizeSlider');
+        
+        colorPicker.addEventListener('change', (e) => {
+            app.color = e.target.value;
+            if(app.activeText) app.activeText.style.color = app.color;
+        });
+        sizeSlider.addEventListener('input', (e) => {
+            app.size = e.target.value;
+            if(app.activeText) app.activeText.style.fontSize = (app.size * 4 + 10) + 'px';
+        });
+
+        // --- DRAWING ENGINE (Canvas) ---
+        const getPos = (e) => ({ x: e.clientX, y: e.clientY });
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (app.tool === 'text') {
+                createText(e.clientX, e.clientY);
+                return;
+            }
+            
+            app.painting = true;
+            const pos = getPos(e);
+            app.startX = pos.x;
+            app.startY = pos.y;
+            
+            ctx.beginPath();
+            ctx.lineWidth = app.size;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = app.color;
+            ctx.fillStyle = app.color;
+            
+            app.snapshot = ctx.getImageData(0,0, canvas.width, canvas.height);
+
+            if (app.tool === 'number') {
+                app.painting = false;
+                drawNumber(pos.x, pos.y);
+                saveState();
+            } else if (app.tool === 'pencil' || app.tool === 'eraser') {
+                ctx.moveTo(pos.x, pos.y);
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!app.painting) return;
+            const pos = getPos(e);
+
+            // Restore snapshot for shapes to avoid trails
+            if (['rect', 'circle', 'line'].includes(app.tool)) ctx.putImageData(app.snapshot, 0, 0);
+
+            if (app.tool === 'pencil') {
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            } else if (app.tool === 'eraser') {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.lineWidth = app.size * 5;
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.lineWidth = app.size;
+            } else if (app.tool === 'line') {
+                ctx.beginPath(); ctx.moveTo(app.startX, app.startY); ctx.lineTo(pos.x, pos.y); ctx.stroke();
+            } else if (app.tool === 'rect') {
+                ctx.strokeRect(app.startX, app.startY, pos.x - app.startX, pos.y - app.startY);
+            } else if (app.tool === 'circle') {
+                ctx.beginPath();
+                let r = Math.sqrt(Math.pow(pos.x - app.startX, 2) + Math.pow(pos.y - app.startY, 2));
+                ctx.arc(app.startX, app.startY, r, 0, 2 * Math.PI);
+                ctx.stroke();
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (app.painting) {
+                app.painting = false;
+                ctx.beginPath();
+                saveState();
+            }
+        });
+
+        // --- TEXT ENGINE (DOM-based for Editing) ---
+        
+        function createText(x, y, content = '') {
+            const div = document.createElement('div');
+            div.className = 'text-box';
+            div.contentEditable = true;
+            div.style.left = x + 'px';
+            div.style.top = y + 'px';
+            div.style.color = app.color;
+            div.style.fontSize = (app.size * 4 + 10) + 'px';
+            div.innerText = content;
+            div.dataset.sheet = app.activeSheet; // Bind to sheet
+
+            // Event Listeners for this text box
+            div.addEventListener('focus', () => {
+                app.activeText = div;
+                // Sync toolbar with text style
+                colorPicker.value = rgbToHex(div.style.color);
+                // Logic to highlight format buttons could go here
+            });
+
+            div.addEventListener('blur', () => {
+                app.activeText = null;
+                if (div.innerText.trim() === '') {
+                    div.remove(); // Remove empty boxes
+                }
+                saveTextToSheetData(); // Save structure
+            });
+
+            // Allow dragging text (basic implementation)
+            div.addEventListener('mousedown', (e) => {
+                if(document.activeElement !== div) {
+                    // Logic for drag could be added here, but for now standard focus click
+                }
+            });
+
+            textLayer.appendChild(div);
+            
+            // Focus immediately
+            setTimeout(() => div.focus(), 0);
+            saveTextToSheetData();
+        }
+
+        // Text Formatting Helpers
+        document.getElementById('fmt-bold').onclick = () => formatText('fontWeight', 'bold');
+        document.getElementById('fmt-italic').onclick = () => formatText('fontStyle', 'italic');
+        document.getElementById('fmt-underline').onclick = () => formatText('textDecoration', 'underline');
+        document.getElementById('fmt-delete').onclick = () => {
+            if(app.activeText) {
+                app.activeText.remove();
+                app.activeText = null;
+                saveTextToSheetData();
+            }
+        };
+
+        function formatText(styleProp, value) {
+            if (!app.activeText) return;
+            // Toggle logic
+            if (app.activeText.style[styleProp] === value) {
+                app.activeText.style[styleProp] = 'normal'; // reset
+            } else {
+                app.activeText.style[styleProp] = value;
+            }
+            saveTextToSheetData();
+        }
+
+        // Helper: RGB to Hex for color picker sync
+        function rgbToHex(col) {
+            if(col.charAt(0)=='#') return col;
+            let rgb = col.match(/\d+/g);
+            if(!rgb) return '#000000';
+            return "#" + ((1 << 24) + (parseInt(rgb[0]) << 16) + (parseInt(rgb[1]) << 8) + parseInt(rgb[2])).toString(16).slice(1);
+        }
+
+        // --- NUMBERS ---
+        function drawNumber(x, y) {
+            const r = 10 + parseInt(app.size);
+            ctx.fillStyle = app.color;
+            ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = 'white'; ctx.font = `bold ${r}px Arial`;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(app.counter, x, y);
+            app.counter++;
+            document.getElementById('counterBadge').innerText = app.counter;
+        }
+
+        // --- PASTE IMAGES ---
+        window.addEventListener('paste', (e) => {
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (let item of items) {
+                if (item.kind === 'file' && item.type.includes('image')) {
+                    const reader = new FileReader();
+                    reader.onload = (evt) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            // Center paste
+                            let x = (canvas.width - img.width)/2;
+                            let y = (canvas.height - img.height)/2;
+                            // constrain size
+                            if(img.width > canvas.width) {
+                                const r = canvas.width/img.width; img.width*=r; img.height*=r;
+                            }
+                            ctx.drawImage(img, x, y, img.width, img.height);
+                            saveState();
+                        };
+                        img.src = evt.target.result;
+                    };
+                    reader.readAsDataURL(item.getAsFile());
+                }
+            }
+        });
+
+        // --- STATE & SAVING ---
+        
+        function saveState() {
+            const sheet = app.sheets[app.activeSheet];
+            if (sheet.step < sheet.history.length - 1) {
+                sheet.history = sheet.history.slice(0, sheet.step + 1);
+            }
+            sheet.history.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+            sheet.step++;
+            if(sheet.history.length > 15) { sheet.history.shift(); sheet.step--; }
+            sheet.imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+        }
+
+        function saveTextToSheetData() {
+            // We store the innerHTML of the text layer for this sheet
+            // But since we use a shared text layer, we just keep the DOM nodes 
+            // The logic is: Text nodes persist in DOM. When switching sheets, we hide/show them.
+            // No complex data saving needed for this simple version, just Visibility toggling.
+        }
+
+        // Undo (Canvas Only)
+        document.getElementById('undoBtn').onclick = () => {
+            const sheet = app.sheets[app.activeSheet];
+            if (sheet.step > 0) {
+                sheet.step--;
+                ctx.putImageData(sheet.history[sheet.step], 0, 0);
+                sheet.imgData = sheet.history[sheet.step];
+            } else {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                sheet.step = -1;
+            }
+        };
+
+        document.getElementById('clearBtn').onclick = () => {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            // Also clear text for this sheet
+            const nodes = document.querySelectorAll(`.text-box`);
+            nodes.forEach(n => {
+                if(n.dataset.sheet == app.activeSheet) n.remove();
+            });
+            saveState();
+        };
+
+        // SAVE AS IMAGE (Tricky part: Render DOM text to Canvas)
+        document.getElementById('saveBtn').onclick = () => {
+            // 1. Save current canvas state
+            const originalData = ctx.getImageData(0,0,canvas.width,canvas.height);
+            
+            // 2. Draw all visible text onto canvas
+            const nodes = document.querySelectorAll('.text-box');
+            nodes.forEach(node => {
+                if(node.style.display === 'none') return; // wrong sheet
+                
+                const style = window.getComputedStyle(node);
+                const x = parseInt(style.left) + 5; // +padding offset
+                const y = parseInt(style.top) + parseInt(style.fontSize); // approximate baseline
+                
+                ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+                ctx.fillStyle = style.color;
+                ctx.fillText(node.innerText, x, y);
+            });
+
+            // 3. Download
+            const link = document.createElement('a');
+            link.download = `FlowBoard_Page${app.activeSheet}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+
+            // 4. Restore Canvas (remove burned-in text, keep DOM text)
+            ctx.putImageData(originalData, 0, 0);
+        };
+
+        // --- SHEETS LOGIC ---
+        const sheetsBar = document.getElementById('sheetsBar');
+        
+        function switchSheet(id) {
+            // Save current visual state
+            app.sheets[app.activeSheet].imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+            
+            // Hide current text
+            document.querySelectorAll(`.text-box`).forEach(el => {
+                if(el.dataset.sheet == app.activeSheet) el.style.display = 'none';
+            });
+
+            app.activeSheet = id;
+            
+            // Restore new visual state
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            if(app.sheets[id].imgData) ctx.putImageData(app.sheets[id].imgData, 0, 0);
+
+            // Show new text
+            document.querySelectorAll(`.text-box`).forEach(el => {
+                if(el.dataset.sheet == app.activeSheet) el.style.display = 'block';
+            });
+
+            // Update UI
+            document.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.sheet-tab[data-id="${id}"]`).classList.add('active');
+        }
+
+        document.getElementById('addSheetBtn').onclick = () => {
+            const newId = Object.keys(app.sheets).length + 1;
+            app.sheets[newId] = { history: [], step: -1, imgData: null };
+            
+            const btn = document.createElement('div');
+            btn.className = 'sheet-tab';
+            btn.innerText = `Page ${newId}`;
+            btn.dataset.id = newId;
+            btn.onclick = () => switchSheet(newId);
+            sheetsBar.insertBefore(btn, document.getElementById('addSheetBtn'));
+            
+            switchSheet(newId);
+        };
+
+        // Init Sheet 1
+        document.querySelector('.sheet-tab[data-id="1"]').onclick = () => switchSheet(1);
+        saveState(); // init history
+
+    </script>
+</body>
+</html>
