@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlowBoard - Infinite Canvas</title>
+    <title>FlowBoard - Infinite Scroll</title>
     <link rel="icon" type="image/webp" href="imgs/output (8).webp">
     <style>
         /* --- CORE STYLES --- */
@@ -18,17 +18,23 @@
 
         body {
             margin: 0;
-            overflow: hidden;
+            overflow: auto; 
             background-color: #f9fafb;
             font-family: 'Inter', 'Segoe UI', sans-serif;
             color: var(--text);
+            /* Background pattern to help visualize movement */
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
         /* --- LAYERS --- */
         #app-container {
             position: relative;
-            width: 100vw;
-            height: 100vh;
+            width: 2500px; /* Infinite Scroll Area */
+            height: 2000px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            background: white;
+            margin: 0;
         }
 
         canvas {
@@ -36,19 +42,20 @@
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 0;
+            /* Canvas is now ABOVE text layer to allow drawing over text */
+            z-index: 10; 
             touch-action: none;
         }
 
-        /* Text Layer covers the same area but allows clicks to pass through to canvas unless hitting text */
         #text-layer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 10;
-            pointer-events: none; /* Let clicks pass to canvas */
+            /* Text is now BELOW canvas */
+            z-index: 5; 
+            pointer-events: none; 
             overflow: hidden;
         }
 
@@ -61,7 +68,7 @@
             border: 1px solid transparent;
             outline: none;
             background: transparent;
-            pointer-events: auto; /* Catch clicks on text */
+            pointer-events: auto; 
             cursor: text;
             white-space: pre-wrap;
             transition: border 0.2s;
@@ -73,19 +80,21 @@
             border: 2px solid var(--primary); 
             background: white; 
             box-shadow: var(--shadow);
-            z-index: 100;
+            /* Bring focused text to very top so it's editable */
+            z-index: 100; 
         }
 
         /* --- CURSORS --- */
-        .cursor-pen { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path></svg>') 0 24, auto; }
-        .cursor-eraser { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><circle cx="12" cy="12" r="10" fill="white" fill-opacity="0.8"/></svg>') 12 12, auto; }
+        /* Fixed: Hotspot set to 0 24 (Bottom Left) to match the pencil tip */
+        .cursor-pen { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22L16 8l4 4L6 26z"></path><path d="M2 22L6 26"></path><path d="M2 22l4-4"></path><path d="M14 10l4 4"></path></svg>') 0 24, auto; }
+        
+        .cursor-eraser { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>') 12 12, auto; }
         .cursor-crosshair { cursor: crosshair; }
 
-        /* --- UI TOOLBARS --- */
+        /* --- UI TOOLBARS (Fixed) --- */
         
-        /* Top Properties Bar */
         .top-bar {
-            position: absolute;
+            position: fixed;
             top: 15px;
             left: 50%;
             transform: translateX(-50%);
@@ -97,7 +106,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            z-index: 100;
+            z-index: 1000;
             border: 1px solid var(--border);
         }
 
@@ -113,9 +122,8 @@
 
         input[type="color"] { width: 30px; height: 30px; border: none; background: none; cursor: pointer; }
         
-        /* Left Tools */
         .toolbar {
-            position: absolute;
+            position: fixed;
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
@@ -126,7 +134,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            z-index: 100;
+            z-index: 1000;
             border: 1px solid var(--border);
         }
 
@@ -138,28 +146,37 @@
         .tool-btn:hover { background: var(--primary-bg); color: var(--primary); }
         .tool-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(99, 102, 241, 0.4); }
 
-        /* Badge */
-        .badge-wrap { position: relative; }
-        .badge { position: absolute; top: -4px; right: -4px; background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
+        /* Badge & Reset Btn */
+        .badge-wrap { position: relative; display: flex; flex-direction: column; align-items: center; }
+        .badge { position: absolute; top: -4px; right: -4px; background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; pointer-events: none;}
+        .reset-counter-btn { 
+            font-size: 10px; margin-top: 2px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 4px; padding: 1px 4px;
+        }
+        .reset-counter-btn:hover { background: #fee2e2; color: red; border-color: red;}
 
         /* Sheets */
         .sheets-bar {
-            position: absolute; bottom: 20px; left: 20px;
-            display: flex; gap: 8px; z-index: 100;
+            position: fixed;
+            bottom: 20px; left: 20px;
+            display: flex; gap: 8px; z-index: 1000;
         }
         .sheet-tab {
-            background: var(--panel-bg); padding: 8px 20px; border-radius: 8px;
+            background: var(--panel-bg); padding: 8px 12px 8px 16px; border-radius: 8px;
             border: 1px solid var(--border); cursor: pointer; font-weight: 500; color: #555;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex; align-items: center; gap: 8px;
         }
         .sheet-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-        /* Context Menu for Text (Visible when text is focused) */
-        #text-controls {
-            display: none;
-            margin-left: 10px;
-            gap: 5px;
+        
+        .del-sheet-btn {
+            width: 16px; height: 16px; border-radius: 50%; background: rgba(0,0,0,0.1); 
+            display: flex; align-items: center; justify-content: center; font-size: 10px; 
+            line-height: 1; opacity: 0.6; transition: 0.2s;
         }
+        .del-sheet-btn:hover { opacity: 1; background: rgba(0,0,0,0.3); color: white; }
+        .sheet-tab.active .del-sheet-btn { background: rgba(255,255,255,0.3); }
+        .sheet-tab.active .del-sheet-btn:hover { background: rgba(255,255,255,0.6); color: red; }
+
     </style>
 </head>
 <body>
@@ -177,15 +194,6 @@
         
         <div class="divider"></div>
 
-        <div class="prop-group" id="text-format-group">
-            <button class="btn-icon" id="fmt-bold" title="Bold"><b>B</b></button>
-            <button class="btn-icon" id="fmt-italic" title="Italic"><i>I</i></button>
-            <button class="btn-icon" id="fmt-underline" title="Underline"><u>U</u></button>
-            <button class="btn-icon" id="fmt-delete" title="Delete Selected" style="color:red;">🗑️</button>
-        </div>
-
-        <div class="divider"></div>
-
         <div class="prop-group">
             <button class="btn-icon" id="undoBtn" title="Undo Drawing">↩</button>
             <button class="btn-icon" id="clearBtn" title="Clear Page">✨</button>
@@ -195,11 +203,12 @@
 
     <div class="toolbar">
         <button class="tool-btn active" id="tool-pencil" title="Freehand">✏️</button>
-        <button class="tool-btn" id="tool-text" title="Text Box (Click to add, Click to edit)">T</button>
+        <button class="tool-btn" id="tool-text" title="Text Box">T</button>
         
         <div class="badge-wrap">
             <button class="tool-btn" id="tool-number" title="Auto Numbering">🔢</button>
             <div id="counterBadge" class="badge">1</div>
+            <button id="resetCounterBtn" class="reset-counter-btn" title="Reset Counter">⟳</button>
         </div>
         
         <div style="height: 1px; background: #eee; margin: 5px 0;"></div>
@@ -211,7 +220,6 @@
     </div>
 
     <div class="sheets-bar" id="sheetsBar">
-        <div class="sheet-tab active" data-id="1">Page 1</div>
         <div class="sheet-tab" id="addSheetBtn" style="padding: 8px 12px;">+</div>
     </div>
 
@@ -220,6 +228,13 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
         const textLayer = document.getElementById('text-layer');
+        const container = document.getElementById('app-container');
+
+        const CANVAS_WIDTH = 2500;
+        const CANVAS_HEIGHT = 2000;
+
+        canvas.width = CANVAS_WIDTH;
+        canvas.height = CANVAS_HEIGHT;
 
         let app = {
             tool: 'pencil',
@@ -228,31 +243,31 @@
             size: 3,
             startX: 0, startY: 0,
             counter: 1,
-            activeText: null, // currently focused text box
+            activeText: null,
             activeSheet: 1,
             sheets: {
-                1: { history: [], step: -1, imgData: null, textNodes: [] } // textNodes stores HTML strings or configs
+                1: { history: [], step: -1, imgData: null } 
             }
         };
 
-        // --- INITIALIZATION ---
-        function resize() {
-            // Preserve content on resize
-            let temp = ctx.getImageData(0,0,canvas.width, canvas.height);
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            ctx.putImageData(temp, 0, 0);
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        // --- CURSOR & TOOL MANAGMENT ---
+        // --- TOOL MANAGEMENT (Logic Updated for Layer Interaction) ---
         const tools = document.querySelectorAll('.tool-btn');
-        const updateCursor = () => {
-            canvas.className = '';
-            if (app.tool === 'pencil') canvas.classList.add('cursor-pen');
-            else if (app.tool === 'eraser') canvas.classList.add('cursor-eraser');
-            else if (['rect', 'circle', 'line', 'number'].includes(app.tool)) canvas.classList.add('cursor-crosshair');
+        
+        const updateLayerInteraction = () => {
+            // CRITICAL: If tool is TEXT, disable canvas interaction so clicks pass to text layer
+            // If tool is DRAWING, enable canvas interaction (canvas is on top)
+            if (app.tool === 'text') {
+                canvas.style.pointerEvents = 'none'; // Let clicks pass to text
+                canvas.className = ''; // Default cursor
+            } else {
+                canvas.style.pointerEvents = 'auto'; // Catch clicks on canvas
+                
+                // Set Cursor Style
+                canvas.className = '';
+                if (app.tool === 'pencil') canvas.classList.add('cursor-pen');
+                else if (app.tool === 'eraser') canvas.classList.add('cursor-eraser');
+                else if (['rect', 'circle', 'line', 'number'].includes(app.tool)) canvas.classList.add('cursor-crosshair');
+            }
         };
 
         tools.forEach(btn => {
@@ -260,13 +275,16 @@
                 tools.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 app.tool = btn.id.replace('tool-', '');
-                updateCursor();
                 
-                // Deselect text if switching tools
+                updateLayerInteraction();
+
+                // Deselect text if switching away
                 if(app.activeText) app.activeText.blur();
             });
         });
-        updateCursor();
+        
+        // Init cursors
+        updateLayerInteraction();
 
         // Property Listeners
         const colorPicker = document.getElementById('colorPicker');
@@ -281,43 +299,63 @@
             if(app.activeText) app.activeText.style.fontSize = (app.size * 4 + 10) + 'px';
         });
 
-        // --- DRAWING ENGINE (Canvas) ---
-        const getPos = (e) => ({ x: e.clientX, y: e.clientY });
+        // --- RESET COUNTER ---
+        document.getElementById('resetCounterBtn').addEventListener('click', () => {
+            app.counter = 1;
+            document.getElementById('counterBadge').innerText = app.counter;
+        });
+
+        // --- DRAWING ENGINE ---
+        const getPos = (e) => ({ x: e.offsetX, y: e.offsetY });
 
         canvas.addEventListener('mousedown', (e) => {
-            if (app.tool === 'text') {
-                createText(e.clientX, e.clientY);
-                return;
-            }
-            
-            app.painting = true;
-            const pos = getPos(e);
-            app.startX = pos.x;
-            app.startY = pos.y;
-            
-            ctx.beginPath();
-            ctx.lineWidth = app.size;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.strokeStyle = app.color;
-            ctx.fillStyle = app.color;
-            
-            app.snapshot = ctx.getImageData(0,0, canvas.width, canvas.height);
+            // If text tool is active, canvas click is disabled via CSS, 
+            // but if we click empty space, we need to catch it on the container?
+            // Actually, createText handles click coordinates.
+            // Since canvas has pointer-events:none in Text Mode, we need listener on container or textLayer
+            if (app.tool !== 'text') {
+                const pos = getPos(e);
+                
+                app.painting = true;
+                app.startX = pos.x;
+                app.startY = pos.y;
+                
+                ctx.beginPath();
+                ctx.lineWidth = app.size;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.strokeStyle = app.color;
+                ctx.fillStyle = app.color;
+                
+                app.snapshot = ctx.getImageData(0,0, canvas.width, canvas.height);
 
-            if (app.tool === 'number') {
-                app.painting = false;
-                drawNumber(pos.x, pos.y);
-                saveState();
-            } else if (app.tool === 'pencil' || app.tool === 'eraser') {
-                ctx.moveTo(pos.x, pos.y);
+                if (app.tool === 'number') {
+                    app.painting = false;
+                    drawNumber(pos.x, pos.y);
+                    saveState();
+                } else if (app.tool === 'pencil' || app.tool === 'eraser') {
+                    ctx.moveTo(pos.x, pos.y);
+                }
             }
         });
 
-        window.addEventListener('mousemove', (e) => {
+        // Listen on container for Text creation because canvas ignores events in Text Mode
+        container.addEventListener('mousedown', (e) => {
+            if (app.tool === 'text') {
+                // Ensure we aren't clicking inside an existing text box
+                if (e.target.classList.contains('text-box')) return;
+                // Calc correct offset relative to container
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                createText(x, y);
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
             if (!app.painting) return;
             const pos = getPos(e);
 
-            // Restore snapshot for shapes to avoid trails
             if (['rect', 'circle', 'line'].includes(app.tool)) ctx.putImageData(app.snapshot, 0, 0);
 
             if (app.tool === 'pencil') {
@@ -350,7 +388,7 @@
             }
         });
 
-        // --- TEXT ENGINE (DOM-based for Editing) ---
+        // --- TEXT ENGINE ---
         
         function createText(x, y, content = '') {
             const div = document.createElement('div');
@@ -361,62 +399,22 @@
             div.style.color = app.color;
             div.style.fontSize = (app.size * 4 + 10) + 'px';
             div.innerText = content;
-            div.dataset.sheet = app.activeSheet; // Bind to sheet
+            div.dataset.sheet = app.activeSheet;
 
-            // Event Listeners for this text box
             div.addEventListener('focus', () => {
                 app.activeText = div;
-                // Sync toolbar with text style
                 colorPicker.value = rgbToHex(div.style.color);
-                // Logic to highlight format buttons could go here
             });
 
             div.addEventListener('blur', () => {
                 app.activeText = null;
-                if (div.innerText.trim() === '') {
-                    div.remove(); // Remove empty boxes
-                }
-                saveTextToSheetData(); // Save structure
-            });
-
-            // Allow dragging text (basic implementation)
-            div.addEventListener('mousedown', (e) => {
-                if(document.activeElement !== div) {
-                    // Logic for drag could be added here, but for now standard focus click
-                }
+                if (div.innerText.trim() === '') div.remove();
             });
 
             textLayer.appendChild(div);
-            
-            // Focus immediately
             setTimeout(() => div.focus(), 0);
-            saveTextToSheetData();
         }
 
-        // Text Formatting Helpers
-        document.getElementById('fmt-bold').onclick = () => formatText('fontWeight', 'bold');
-        document.getElementById('fmt-italic').onclick = () => formatText('fontStyle', 'italic');
-        document.getElementById('fmt-underline').onclick = () => formatText('textDecoration', 'underline');
-        document.getElementById('fmt-delete').onclick = () => {
-            if(app.activeText) {
-                app.activeText.remove();
-                app.activeText = null;
-                saveTextToSheetData();
-            }
-        };
-
-        function formatText(styleProp, value) {
-            if (!app.activeText) return;
-            // Toggle logic
-            if (app.activeText.style[styleProp] === value) {
-                app.activeText.style[styleProp] = 'normal'; // reset
-            } else {
-                app.activeText.style[styleProp] = value;
-            }
-            saveTextToSheetData();
-        }
-
-        // Helper: RGB to Hex for color picker sync
         function rgbToHex(col) {
             if(col.charAt(0)=='#') return col;
             let rgb = col.match(/\d+/g);
@@ -436,53 +434,22 @@
             document.getElementById('counterBadge').innerText = app.counter;
         }
 
-        // --- PASTE IMAGES ---
-        window.addEventListener('paste', (e) => {
-            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-            for (let item of items) {
-                if (item.kind === 'file' && item.type.includes('image')) {
-                    const reader = new FileReader();
-                    reader.onload = (evt) => {
-                        const img = new Image();
-                        img.onload = () => {
-                            // Center paste
-                            let x = (canvas.width - img.width)/2;
-                            let y = (canvas.height - img.height)/2;
-                            // constrain size
-                            if(img.width > canvas.width) {
-                                const r = canvas.width/img.width; img.width*=r; img.height*=r;
-                            }
-                            ctx.drawImage(img, x, y, img.width, img.height);
-                            saveState();
-                        };
-                        img.src = evt.target.result;
-                    };
-                    reader.readAsDataURL(item.getAsFile());
-                }
-            }
-        });
-
         // --- STATE & SAVING ---
-        
         function saveState() {
             const sheet = app.sheets[app.activeSheet];
+            // Memory Optimization
+            if (sheet.history.length > 5) {
+                sheet.history.shift();
+                sheet.step--;
+            }
             if (sheet.step < sheet.history.length - 1) {
                 sheet.history = sheet.history.slice(0, sheet.step + 1);
             }
             sheet.history.push(ctx.getImageData(0,0,canvas.width,canvas.height));
             sheet.step++;
-            if(sheet.history.length > 15) { sheet.history.shift(); sheet.step--; }
             sheet.imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
         }
 
-        function saveTextToSheetData() {
-            // We store the innerHTML of the text layer for this sheet
-            // But since we use a shared text layer, we just keep the DOM nodes 
-            // The logic is: Text nodes persist in DOM. When switching sheets, we hide/show them.
-            // No complex data saving needed for this simple version, just Visibility toggling.
-        }
-
-        // Undo (Canvas Only)
         document.getElementById('undoBtn').onclick = () => {
             const sheet = app.sheets[app.activeSheet];
             if (sheet.step > 0) {
@@ -497,88 +464,116 @@
 
         document.getElementById('clearBtn').onclick = () => {
             ctx.clearRect(0,0,canvas.width,canvas.height);
-            // Also clear text for this sheet
-            const nodes = document.querySelectorAll(`.text-box`);
-            nodes.forEach(n => {
+            document.querySelectorAll(`.text-box`).forEach(n => {
                 if(n.dataset.sheet == app.activeSheet) n.remove();
             });
             saveState();
         };
 
-        // SAVE AS IMAGE (Tricky part: Render DOM text to Canvas)
         document.getElementById('saveBtn').onclick = () => {
-            // 1. Save current canvas state
             const originalData = ctx.getImageData(0,0,canvas.width,canvas.height);
-            
-            // 2. Draw all visible text onto canvas
             const nodes = document.querySelectorAll('.text-box');
+            
             nodes.forEach(node => {
-                if(node.style.display === 'none') return; // wrong sheet
-                
+                if(node.style.display === 'none') return;
                 const style = window.getComputedStyle(node);
-                const x = parseInt(style.left) + 5; // +padding offset
-                const y = parseInt(style.top) + parseInt(style.fontSize); // approximate baseline
-                
+                const x = parseInt(style.left) + 5;
+                const y = parseInt(style.top) + parseInt(style.fontSize);
                 ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
                 ctx.fillStyle = style.color;
                 ctx.fillText(node.innerText, x, y);
             });
 
-            // 3. Download
             const link = document.createElement('a');
-            link.download = `FlowBoard_Page${app.activeSheet}.png`;
+            link.download = `FlowBoard_Sheet${app.activeSheet}.png`;
             link.href = canvas.toDataURL();
             link.click();
 
-            // 4. Restore Canvas (remove burned-in text, keep DOM text)
             ctx.putImageData(originalData, 0, 0);
         };
 
         // --- SHEETS LOGIC ---
         const sheetsBar = document.getElementById('sheetsBar');
+        const addSheetBtn = document.getElementById('addSheetBtn');
+
+        function renderSheetTabs() {
+            Array.from(sheetsBar.children).forEach(child => {
+                if(child.id !== 'addSheetBtn') sheetsBar.removeChild(child);
+            });
+
+            Object.keys(app.sheets).forEach(key => {
+                const id = parseInt(key);
+                const btn = document.createElement('div');
+                btn.className = `sheet-tab ${id === app.activeSheet ? 'active' : ''}`;
+                
+                const span = document.createElement('span');
+                span.innerText = `Page ${id}`;
+                btn.appendChild(span);
+
+                if (id !== 1) {
+                    const delBtn = document.createElement('div');
+                    delBtn.className = 'del-sheet-btn';
+                    delBtn.innerText = '✕';
+                    delBtn.onclick = (e) => {
+                        e.stopPropagation(); 
+                        deleteSheet(id);
+                    };
+                    btn.appendChild(delBtn);
+                }
+
+                btn.onclick = () => switchSheet(id);
+                sheetsBar.insertBefore(btn, addSheetBtn);
+            });
+        }
         
         function switchSheet(id) {
-            // Save current visual state
-            app.sheets[app.activeSheet].imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+            if(app.sheets[app.activeSheet]) {
+                app.sheets[app.activeSheet].imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+            }
             
-            // Hide current text
             document.querySelectorAll(`.text-box`).forEach(el => {
                 if(el.dataset.sheet == app.activeSheet) el.style.display = 'none';
             });
 
             app.activeSheet = id;
             
-            // Restore new visual state
             ctx.clearRect(0,0,canvas.width,canvas.height);
             if(app.sheets[id].imgData) ctx.putImageData(app.sheets[id].imgData, 0, 0);
 
-            // Show new text
             document.querySelectorAll(`.text-box`).forEach(el => {
                 if(el.dataset.sheet == app.activeSheet) el.style.display = 'block';
             });
 
-            // Update UI
-            document.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector(`.sheet-tab[data-id="${id}"]`).classList.add('active');
+            renderSheetTabs();
         }
 
-        document.getElementById('addSheetBtn').onclick = () => {
-            const newId = Object.keys(app.sheets).length + 1;
+        function deleteSheet(id) {
+            if(id === 1) return; 
+            
+            if (confirm(`Delete Page ${id}?`)) {
+                delete app.sheets[id];
+                
+                document.querySelectorAll(`.text-box`).forEach(el => {
+                    if(el.dataset.sheet == id) el.remove();
+                });
+
+                if (app.activeSheet === id) {
+                    switchSheet(1);
+                } else {
+                    renderSheetTabs();
+                }
+            }
+        }
+
+        addSheetBtn.onclick = () => {
+            const ids = Object.keys(app.sheets).map(Number);
+            const newId = (Math.max(...ids) || 0) + 1;
             app.sheets[newId] = { history: [], step: -1, imgData: null };
-            
-            const btn = document.createElement('div');
-            btn.className = 'sheet-tab';
-            btn.innerText = `Page ${newId}`;
-            btn.dataset.id = newId;
-            btn.onclick = () => switchSheet(newId);
-            sheetsBar.insertBefore(btn, document.getElementById('addSheetBtn'));
-            
             switchSheet(newId);
         };
 
-        // Init Sheet 1
-        document.querySelector('.sheet-tab[data-id="1"]').onclick = () => switchSheet(1);
-        saveState(); // init history
+        renderSheetTabs();
+        saveState(); 
 
     </script>
 </body>
