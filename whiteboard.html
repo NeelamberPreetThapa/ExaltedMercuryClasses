@@ -36,7 +36,6 @@
             background-color: var(--bg-color);
             font-family: 'Inter', 'Segoe UI', sans-serif;
             color: var(--text);
-            /* Background pattern */
             background-image: radial-gradient(var(--grid-color) 1px, transparent 1px);
             background-size: 20px 20px;
             transition: background-color 0.3s, color 0.3s;
@@ -73,10 +72,16 @@
             position: absolute;
             min-width: 50px; min-height: 20px; padding: 5px 10px;
             border: 1px solid transparent; outline: none;
-            background: transparent; pointer-events: auto; 
+            background: transparent; 
+            pointer-events: auto; /* Default: Clickable */
             cursor: text; white-space: pre-wrap;
             transition: border 0.2s; border-radius: 4px;
             color: var(--text);
+        }
+
+        /* CRITICAL FIX: When in drawing mode, text boxes ignore clicks so you can draw over them */
+        body.drawing-mode .text-box {
+            pointer-events: none;
         }
 
         .text-box:hover { border: 1px dashed #ccc; background: rgba(125,125,125,0.1); }
@@ -84,15 +89,14 @@
             border: 2px solid var(--primary); 
             background: var(--panel-bg); 
             box-shadow: var(--shadow); z-index: 100; 
+            pointer-events: auto !important; /* Always allow interaction if focused */
         }
 
         /* --- CURSORS --- */
-        /* Default Black Pencil */
         .cursor-pen { 
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22L16 8l4 4L6 26z"></path><path d="M2 22L6 26"></path><path d="M2 22l4-4"></path><path d="M14 10l4 4"></path></svg>') 0 24, auto; 
         }
 
-        /* Dark Mode White Pencil */
         body.dark-mode .cursor-pen { 
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22L16 8l4 4L6 26z"></path><path d="M2 22L6 26"></path><path d="M2 22l4-4"></path><path d="M14 10l4 4"></path></svg>') 0 24, auto; 
         }
@@ -283,7 +287,6 @@
 
         // --- 1. LOCAL STORAGE / AUTO SAVE LOGIC ---
         
-        // On Load: Check if save exists
         window.onload = () => {
             if(localStorage.getItem('flowboard_data')) {
                 restoreModal.style.display = 'flex';
@@ -294,24 +297,19 @@
         function triggerAutoSave() {
             clearTimeout(autoSaveTimer);
             autoSaveTimer = setTimeout(() => {
-                // We save active sheet image + text + global settings
-                
                 const sheetsData = [];
                 Object.keys(app.sheets).forEach(k => {
                     const id = parseInt(k);
-                    // If it's the current sheet, get data from canvas, else from memory
                     let imgStr = null;
                     if(id === app.activeSheet) {
                         imgStr = canvas.toDataURL();
                     } else if(app.sheets[id].imgData) {
-                        // Create temp canvas to extract dataURL from ImageData
                         const t = document.createElement('canvas');
                         t.width = CANVAS_WIDTH; t.height = CANVAS_HEIGHT;
                         t.getContext('2d').putImageData(app.sheets[id].imgData,0,0);
                         imgStr = t.toDataURL();
                     }
 
-                    // Get Texts
                     const textNodes = [];
                     document.querySelectorAll(`.text-box[data-sheet="${id}"]`).forEach(t => {
                         textNodes.push({
@@ -333,7 +331,7 @@
                     localStorage.setItem('flowboard_data', JSON.stringify(saveData));
                 } catch(e) { console.log("Storage full"); }
 
-            }, 1000); // Save 1 sec after changes
+            }, 1000); 
         }
 
         function restoreSession() {
@@ -341,28 +339,22 @@
                 const data = JSON.parse(localStorage.getItem('flowboard_data'));
                 restoreModal.style.display = 'none';
 
-                // Restore Dark Mode
                 if(data.darkMode) toggleDarkMode();
 
-                // Restore Sheets
                 app.sheets = {};
                 
-                // We need to load images async
                 const promises = data.sheets.map(s => {
                     app.sheets[s.id] = { history: [], step: -1, imgData: null };
                     
-                    // Restore Text
                     s.texts.forEach(t => {
                         createTextBoxDOM(t.x, t.y, t.html, t.color, t.size, s.id);
                     });
 
-                    // Restore Image
                     if(s.img) {
                         return new Promise(resolve => {
                             const img = new Image();
                             img.src = s.img;
                             img.onload = () => {
-                                // Draw to temp canvas to get ImageData
                                 const t = document.createElement('canvas');
                                 t.width = CANVAS_WIDTH; t.height = CANVAS_HEIGHT;
                                 t.getContext('2d').drawImage(img,0,0);
@@ -398,13 +390,13 @@
             
             if(app.isDarkMode) {
                 darkModeBtn.innerText = '☀️';
-                if(app.color === '#000000') { // Switch pen to white if it was default black
+                if(app.color === '#000000') { 
                     app.color = '#ffffff';
                     document.getElementById('colorPicker').value = '#ffffff';
                 }
             } else {
                 darkModeBtn.innerText = '🌙';
-                if(app.color === '#ffffff') { // Switch pen to black if it was default white
+                if(app.color === '#ffffff') { 
                     app.color = '#000000';
                     document.getElementById('colorPicker').value = '#000000';
                 }
@@ -415,7 +407,6 @@
 
         // --- 3. KEYBOARD SHORTCUTS ---
         document.addEventListener('keydown', (e) => {
-            // Don't trigger if user is typing
             if(e.target.isContentEditable || e.target.tagName === 'INPUT') return;
 
             if(e.ctrlKey && e.key.toLowerCase() === 'z') {
@@ -431,7 +422,7 @@
         });
 
 
-        // --- EXISTING CORE LOGIC (With AutoSave Hooks) ---
+        // --- CORE LOGIC (Updated for drawing over text) ---
 
         container.addEventListener('mousemove', (e) => {
             const rect = container.getBoundingClientRect();
@@ -455,18 +446,23 @@
                 let drawY = (mouseY > 0 && mouseY < CANVAS_HEIGHT) ? mouseY : 100;
                 ctx.drawImage(imgBitmap, drawX, drawY);
                 saveState();
-                triggerAutoSave(); // Hook
+                triggerAutoSave();
             }
         });
 
         const tools = document.querySelectorAll('.tool-btn');
         const updateLayerInteraction = () => {
             if (app.tool === 'text') {
+                // Text Mode: Text boxes catch clicks
                 canvas.style.pointerEvents = 'none';
+                document.body.classList.remove('drawing-mode'); // Enable text interaction
                 container.style.cursor = 'text';
             } else {
+                // Drawing Mode: Text boxes ignore clicks (Ghost mode)
                 canvas.style.pointerEvents = 'auto';
+                document.body.classList.add('drawing-mode'); // Disable text interaction
                 container.style.cursor = 'default';
+                
                 canvas.className = '';
                 if (app.tool === 'pencil') canvas.classList.add('cursor-pen');
                 else if (app.tool === 'eraser') canvas.classList.add('cursor-eraser');
@@ -522,14 +518,13 @@
                     app.painting = false;
                     drawNumber(pos.x, pos.y);
                     saveState();
-                    triggerAutoSave(); // Hook
+                    triggerAutoSave(); 
                 } else if (app.tool === 'pencil' || app.tool === 'eraser') {
                     ctx.moveTo(pos.x, pos.y);
                 }
             }
         });
 
-        // Use container/textLayer for creating NEW text
         container.addEventListener('mousedown', (e) => {
             if (app.tool === 'text') {
                 if (e.target.classList.contains('text-box')) return;
@@ -571,11 +566,10 @@
                 app.painting = false;
                 ctx.beginPath();
                 saveState();
-                triggerAutoSave(); // Hook
+                triggerAutoSave(); 
             }
         });
 
-        // Helper to separate Logic from Creation
         function createTextBoxDOM(x, y, content, color, fontSize, sheetId) {
             const div = document.createElement('div');
             div.className = 'text-box';
@@ -587,7 +581,6 @@
             div.innerText = content;
             div.dataset.sheet = sheetId;
 
-            // Initially hide if not active sheet
             if(sheetId !== app.activeSheet) div.style.display = 'none';
 
             div.addEventListener('mousedown', (e) => e.stopPropagation());
@@ -598,9 +591,8 @@
             div.addEventListener('blur', () => {
                 app.activeText = null;
                 if (div.innerText.trim() === '') div.remove();
-                triggerAutoSave(); // Hook
+                triggerAutoSave(); 
             });
-            // Hook for text changes
             div.addEventListener('keyup', () => triggerAutoSave());
 
             textLayer.appendChild(div);
@@ -651,11 +643,11 @@
                 sheet.step--;
                 ctx.putImageData(sheet.history[sheet.step], 0, 0);
                 sheet.imgData = sheet.history[sheet.step];
-                triggerAutoSave(); // Hook
+                triggerAutoSave(); 
             } else {
                 ctx.clearRect(0,0,canvas.width,canvas.height);
                 sheet.step = -1;
-                triggerAutoSave(); // Hook
+                triggerAutoSave(); 
             }
         };
 
@@ -665,7 +657,7 @@
                 if(n.dataset.sheet == app.activeSheet) n.remove();
             });
             saveState();
-            triggerAutoSave(); // Hook
+            triggerAutoSave(); 
         };
 
         document.getElementById('saveBtn').onclick = () => {
@@ -753,7 +745,6 @@
             app.activeSheet = id;
             
             ctx.clearRect(0,0,canvas.width,canvas.height);
-            // If data exists (from memory OR restore), draw it
             if(app.sheets[id].imgData) {
                 ctx.putImageData(app.sheets[id].imgData, 0, 0);
             }
@@ -763,7 +754,7 @@
             });
 
             renderSheetTabs();
-            triggerAutoSave(); // Hook
+            triggerAutoSave(); 
         }
 
         function deleteSheet(id) {
@@ -780,7 +771,7 @@
                 } else {
                     renderSheetTabs();
                 }
-                triggerAutoSave(); // Hook
+                triggerAutoSave(); 
             }
         }
 
