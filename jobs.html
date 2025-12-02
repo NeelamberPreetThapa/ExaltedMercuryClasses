@@ -4,38 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Career Opportunities - Exalted Mercury</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons for a professional look -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Custom styles for smooth transition and professional feel */
         .job-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease-in-out;
             border-top: 1px solid transparent;
         }
-        /* FIX: Increased max-height significantly (5000px) to guarantee button visibility on all mobile screens while preserving animation */
         .job-content.active {
             max-height: 5000px; 
         }
         /* Specific border colors for active accordion */
-        #job-1-content.active { border-top-color: rgb(224, 231, 255); } /* Indigo-100 */
-        #job-2-content.active { border-top-color: rgb(209, 250, 229); } /* Emerald-100 */
-        #job-3-content.active { border-top-color: rgb(219, 234, 254); } /* Blue-100 */
-
+        #job-1-content.active { border-top-color: rgb(224, 231, 255); } /* Indigo */
+        
         .icon-rotate {
             transition: transform 0.3s;
         }
         .icon-rotate.active {
             transform: rotate(180deg);
         }
-        /* Custom scroll behavior and responsive fixes from user's request */
         html {
             scroll-behavior: smooth;
         }
-        /* Fixing the mobile/desktop navigation structure (though simplified here) */
         @media (max-width: 767px) {
             .brand-text-mobile-shrink {
                 font-size: 0.9rem;
@@ -47,11 +39,9 @@
             }
         }
     </style>
-    <!-- No custom Tailwind config needed, we'll use default colors -->
 </head>
 <body class="bg-gray-100 font-sans min-h-screen">
 
-    <!-- Sticky Header (Blue to Green Gradient) -->
     <header class="bg-gradient-to-r from-indigo-600 to-emerald-600 shadow-lg sticky top-0 z-10">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2 brand-text-mobile-shrink">
@@ -60,88 +50,78 @@
                     <span class="block text-xs font-normal text-indigo-200">Global Academic Success</span>
                 </h1>
             </div>
-            <!-- FIX: Changed href to absolute URL (https://) -->
             <a href="https://www.exaltedmercury.com" target="_blank" class="text-indigo-200 hover:text-white transition duration-300 font-medium text-sm md:text-base px-3 py-1 rounded-full border border-indigo-200 hover:bg-indigo-700">
                 Visit Website
             </a>
         </div>
     </header>
 
-    <!-- Main Content Area -->
     <main class="container mx-auto px-4 md:px-10 py-12">
         <div class="text-center mb-12">
-            <!-- Changed text color to Indigo (Blue) -->
-            <p class="text-indigo-600 font-semibold uppercase text-sm mb-2">Careers at Exalted Mercury</p>
-            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-800 leading-tight">Your Next Opportunity Awaits</h2>
+            <p class="text-indigo-600 font-semibold uppercase text-sm mb-2">Join Our Team</p>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-800 leading-tight">We Are Hiring</h2>
             <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">
-                Join our mission to connect highly skilled educators with international students. Find the role that matches your passion and expertise.
+                Find the role that matches your passion. We value knowledge, dedication, and creativity.
             </p>
         </div>
 
-        <!-- Jobs List Container (Accordion) -->
         <div class="space-y-6 max-w-4xl mx-auto">
 
-            <!-- JOB CARD 1: Lead Generation Specialist (Theme: Indigo/Blue) -->
-            <div class="bg-white rounded-xl shadow-xl border border-gray-200 hover:shadow-2xl transition duration-300">
+            <div class="bg-white rounded-xl shadow-xl border border-indigo-200 hover:shadow-2xl transition duration-300 ring-2 ring-indigo-500/20">
                 <button class="job-header w-full p-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleJob(1)">
                     <div class="flex items-center space-x-4">
-                        <div class="p-3 bg-red-500/10 rounded-full text-red-600">
-                            <i data-lucide="trending-up" class="w-6 h-6"></i>
+                        <div class="p-3 bg-indigo-600 rounded-full text-white">
+                            <i data-lucide="megaphone" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <h3 class="text-2xl font-bold text-gray-800">Lead Generation Expert</h3>
-                            <p class="text-md text-gray-500 mt-1 font-medium">Remote | Commission-Based | Highest Earning Potential</p>
+                            <h3 class="text-2xl font-bold text-indigo-900">Marketing Lead</h3>
+                            <p class="text-md text-indigo-600 mt-1 font-medium">Remote | High Earning Potential | Immediate Joining</p>
                         </div>
                     </div>
-                    <!-- Icon setup for toggle -->
                     <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-1" data-lucide="chevron-down"></span>
                 </button>
-                <div id="job-1-content" class="job-content bg-indigo-50/20">
+                <div id="job-1-content" class="job-content bg-indigo-50/30">
                     <div class="p-6">
-                        <!-- Key Information Badges (Theme: Indigo) -->
                         <div class="flex flex-wrap gap-3 text-sm mb-6">
-                            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-1"></i> Remote (Global)</span>
-                            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="briefcase" class="w-4 h-4 mr-1"></i> 0–3 Years Exp.</span>
-                            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i> Flexible Hours</span>
-                            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="dollar-sign" class="w-4 h-4 mr-1"></i> Commission-Based</span>
+                            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="zap" class="w-4 h-4 mr-1"></i> Active Hiring</span>
+                            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="globe" class="w-4 h-4 mr-1"></i> Social Media</span>
+                            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="dollar-sign" class="w-4 h-4 mr-1"></i> Performance Based</span>
                         </div>
                         
-                        <h4 class="text-xl font-semibold text-gray-800 mb-2">About the Role</h4>
-                        <p class="text-gray-600 mb-4 text-base leading-relaxed">
-                            As a Lead Generation Specialist, your job is to connect with parents or students (mainly from the UK and US), build trust, and encourage them to book demo classes with Exalted Mercury. This position offers fully remote work and flexible hours, rewarding you with attractive, stacking commissions for every converted lead.
-                        </p>
-                        
-                        <h5 class="font-bold text-gray-700 mt-4 mb-2">Key Responsibilities</h5>
-                        <ul class="list-disc list-outside ml-5 space-y-2 text-gray-700 text-sm">
-                            <li>Generate high-quality leads for demo classes through social media, referrals, or personalized outreach.</li>
-                            <li>Communicate with potential clients in a persuasive yet authentic manner.</li>
-                            <li>Maintain consistent updates on conversations and progress with the core team.</li>
-                            <li>Use creative approaches such as quizzes, promotional offers, or personal testimonials to attract interest.</li>
-                            <li>Re-engage demo students who didn’t initially register and assist in converting them.</li>
-                        </ul>
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-indigo-100">
+                                <h4 class="font-bold text-indigo-800 mb-3 flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-2"></i> Qualifications</h4>
+                                <ul class="space-y-2 text-gray-700 text-sm">
+                                    <li class="flex items-start"><span class="mr-2">•</span> Knows how to use Reddit, Quora, Facebook, and Medium well.</li>
+                                    <li class="flex items-start"><span class="mr-2">•</span> Able to chat comfortably and keep clients engaged.</li>
+                                    <li class="flex items-start"><span class="mr-2">•</span> Honest, disciplined, and motivated to grow.</li>
+                                </ul>
+                            </div>
 
-                        <h5 class="font-bold text-gray-700 mt-4 mb-2">Compensation Structure</h5>
-                        <p class="text-gray-600 text-sm">This is a performance-based opportunity with highly rewarding, stacking commissions:</p>
-                        <ul class="list-disc list-outside ml-5 space-y-1 text-gray-700 text-sm mt-2">
-                            <li><strong>30% of the class fee</strong> for each student you bring during the first month.</li>
-                            <li>Continued <strong>passive commissions</strong> for up to 8 months based on the student’s retention.</li>
-                            <li>Example: For a $20 class, you earn $6 per class. 20 classes in a month = $120 (≈ ₹10,000/per student).</li>
-                        </ul>
-                        
-                        <!-- User's high-impact line moved to a separate, styled block for better aesthetics and mobile flow -->
-                        <div class="mt-4 p-3 bg-red-100 border-l-4 border-red-500 rounded-md text-red-800">
-                            <p class="font-bold text-sm">High-Potential Example:</p>
-                            <p class="text-xs sm:text-sm">The commissions stack up, e.g., if you bring in just 7 students you can make upwards of <strong>₹70,000!</strong></p>
-                        </div>
-                        
-                        <!-- Manual Application Block (Theme: Indigo) -->
-                        <div class="mt-8 p-4 bg-indigo-50 border-l-4 border-indigo-600 text-gray-800 rounded-md">
-                            <p class="font-semibold text-indigo-700 mb-1">📧 To Apply (Manual Option):</p>
-                            <p class="text-sm">Send your resume to <strong>exaltedmercuryteam@gmail.com</strong> with the subject line: <strong>“Application – Lead Generation Specialist”</strong></p>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-indigo-100">
+                                <h4 class="font-bold text-indigo-800 mb-3 flex items-center"><i data-lucide="banknote" class="w-4 h-4 mr-2"></i> Commission Based Role</h4>
+                                <ul class="space-y-2 text-gray-700 text-sm">
+                                    <li class="flex items-center justify-between">
+                                        <span>Part Time Potential:</span>
+                                        <span class="font-bold text-green-600">₹10k+</span>
+                                    </li>
+                                    <li class="flex items-center justify-between">
+                                        <span>Full Time Potential:</span>
+                                        <span class="font-bold text-green-600">₹70k+</span>
+                                    </li>
+                                    <li class="text-xs text-gray-500 mt-2 border-t pt-2">
+                                        * The salaries shall strictly be based off performance.
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
 
-                        <!-- Button uses 'flex w-full sm:w-auto' to ensure visibility on mobile -->
-                        <a href="mailto:exaltedmercuryteam@gmail.com?subject=Application%20–%20Lead%20Generation%20Specialist" class="mt-4 flex w-full sm:w-auto items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white bg-indigo-600 hover:bg-indigo-700 transition duration-300 transform hover:scale-[1.02]">
+                        <div class="p-4 bg-indigo-100 border-l-4 border-indigo-600 text-gray-800 rounded-md">
+                            <p class="font-semibold text-indigo-900 mb-1">📧 To Apply:</p>
+                            <p class="text-sm">Send your resume to <strong>exaltedmercuryteam@gmail.com</strong></p>
+                        </div>
+
+                        <a href="mailto:exaltedmercuryteam@gmail.com?subject=Application%20–%20Marketing%20Lead" class="mt-4 flex w-full sm:w-auto items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white bg-indigo-600 hover:bg-indigo-700 transition duration-300 transform hover:scale-[1.02]">
                             Apply Now (Auto Mail)
                             <i data-lucide="mail" class="w-4 h-4 ml-2"></i>
                         </a>
@@ -149,122 +129,144 @@
                 </div>
             </div>
 
-            <!-- JOB CARD 2: Online Teachers (Theme: Emerald/Green) -->
-            <div class="bg-white rounded-xl shadow-xl border border-gray-200 hover:shadow-2xl transition duration-300">
+            <div class="bg-gray-50 rounded-xl shadow border border-gray-200 opacity-90">
                 <button class="job-header w-full p-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleJob(2)">
                     <div class="flex items-center space-x-4">
-                        <div class="p-3 bg-emerald-500/10 rounded-full text-emerald-600">
+                        <div class="p-3 bg-gray-200 rounded-full text-gray-500">
                             <i data-lucide="school" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <h3 class="text-2xl font-bold text-gray-800">Online Maths & Science Teacher</h3>
-                            <p class="text-md text-gray-500 mt-1 font-medium">UK/US Curriculum | Remote | Night Shifts (IST)</p>
+                            <h3 class="text-xl font-bold text-gray-600">Online Maths & Science Teacher</h3>
+                            <p class="text-sm text-gray-500 mt-1 font-medium italic">Status: Future Opening</p>
                         </div>
                     </div>
-                    <!-- Icon setup for toggle -->
                     <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-2" data-lucide="chevron-down"></span>
                 </button>
-                <div id="job-2-content" class="job-content bg-emerald-50/20">
+                <div id="job-2-content" class="job-content bg-gray-100">
                     <div class="p-6">
-                         <!-- Key Information Badges (Theme: Emerald) -->
-                        <div class="flex flex-wrap gap-3 text-sm mb-6">
-                            <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-1"></i> Remote (Global)</span>
-                            <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="briefcase" class="w-4 h-4 mr-1"></i> 0–5 Years Exp.</span>
-                            <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="moon" class="w-4 h-4 mr-1"></i> Night Shifts (IST)</span>
-                            <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="book-open" class="w-4 h-4 mr-1"></i> UK/US Curriculum</span>
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6 rounded-r shadow-sm">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i data-lucide="clock" class="h-5 w-5 text-amber-500"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-amber-700 font-medium">
+                                        We have met our current requirements and we'll open applications for these positions soon.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
 
-                        <h4 class="text-xl font-semibold text-gray-800 mb-2">About the Role</h4>
-                        <p class="text-gray-600 mb-4 text-base leading-relaxed">
-                            You will be teaching students from the UK and US, primarily from Grades 9–12. You’ll conduct live online sessions, prepare engaging lessons, and adapt your teaching style to suit international learners. This role requires comfort with working hours during the night (Indian Standard Time) to match student schedules abroad.
-                        </p>
-                        
-                        <h5 class="font-bold text-gray-700 mt-4 mb-2">Key Responsibilities</h5>
-                        <ul class="list-disc list-outside ml-5 space-y-2 text-gray-700 text-sm">
-                            <li>Conduct engaging online classes in Mathematics and/or Science for UK and US students.</li>
-                            <li>Prepare lesson plans, assignments, and feedback aligned with international standards (GCSE, A-levels, AP, etc.).</li>
-                            <li>Assess student progress and provide personalized guidance.</li>
-                            <li>Maintain punctuality, professionalism, and a student-first mindset.</li>
-                        </ul>
-
-                        <h5 class="font-bold text-gray-700 mt-4 mb-2">Compensation Structure</h5>
-                        <ul class="list-disc list-outside ml-5 space-y-1 text-gray-700 text-sm mt-2">
-                            <li>Weekly payments based on the number of sessions conducted.</li>
-                            <li>Competitive hourly rates depending on experience and subject expertise.</li>
-                            <li>Performance-based bonuses for consistency and positive student feedback.</li>
-                        </ul>
-
-                        <!-- Manual Application Block (Theme: Emerald) -->
-                        <div class="mt-8 p-4 bg-emerald-50 border-l-4 border-emerald-600 text-gray-800 rounded-md">
-                            <p class="font-semibold text-emerald-700 mb-1">📧 To Apply (Manual Option):</p>
-                            <p class="text-sm">Send your resume to <strong>exaltedmercuryteam@gmail.com</strong> with the subject line: <strong>“Application – Online Maths/Science Teacher”</strong></p>
+                        <div class="opacity-75 grayscale-[50%] pointer-events-none select-none">
+                            <div class="flex flex-wrap gap-3 text-sm mb-6">
+                                <span class="bg-white border border-gray-300 text-gray-600 px-3 py-1 rounded-full font-medium">Remote</span>
+                                <span class="bg-white border border-gray-300 text-gray-600 px-3 py-1 rounded-full font-medium">Night Shifts</span>
+                                <span class="bg-white border border-gray-300 text-gray-600 px-3 py-1 rounded-full font-medium">UK/US Curriculum</span>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-700 mb-2">About the Role</h4>
+                            <p class="text-gray-600 mb-4 text-sm">
+                                Teaching students from the UK and US (Grades 9–12). Requires comfort with night shifts (IST).
+                            </p>
                         </div>
-
-                        <!-- Button uses 'flex w-full sm:w-auto' to ensure visibility on mobile -->
-                        <a href="mailto:exaltedmercuryteam@gmail.com?subject=Application%20–%20Online%20Maths/Science%20Teacher" class="mt-4 flex w-full sm:w-auto items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white bg-emerald-600 hover:bg-emerald-700 transition duration-300 transform hover:scale-[1.02]">
-                            Apply Now (Auto Mail)
-                            <i data-lucide="mail" class="w-4 h-4 ml-2"></i>
-                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- JOB CARD 3: Operations & Community Catalyst (Theme: Blue) -->
-            <div class="bg-white rounded-xl shadow-xl border border-gray-200 hover:shadow-2xl transition duration-300">
+            <div class="bg-gray-50 rounded-xl shadow border border-gray-200 opacity-90">
                 <button class="job-header w-full p-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleJob(3)">
                     <div class="flex items-center space-x-4">
-                        <div class="p-3 bg-blue-500/10 rounded-full text-blue-600">
+                        <div class="p-3 bg-gray-200 rounded-full text-gray-500">
                             <i data-lucide="users" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <h3 class="text-2xl font-bold text-gray-800">Operations & Community Catalyst</h3>
-                            <p class="text-md text-gray-500 mt-1 font-medium">Coordination | Strategy | Full-Time (Dehradun/Remote)</p>
+                            <h3 class="text-xl font-bold text-gray-600">Operations & Community Catalyst</h3>
+                            <p class="text-sm text-gray-500 mt-1 font-medium italic">Status: Future Opening</p>
                         </div>
                     </div>
-                    <!-- Icon setup for toggle -->
                     <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-3" data-lucide="chevron-down"></span>
                 </button>
-                <div id="job-3-content" class="job-content bg-blue-50/20">
+                <div id="job-3-content" class="job-content bg-gray-100">
                     <div class="p-6">
-                        <!-- Key Information Badges (Theme: Blue) -->
-                        <div class="flex flex-wrap gap-3 text-sm mb-6">
-                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-1"></i> Dehradun/Remote</span>
-                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="briefcase" class="w-4 h-4 mr-1"></i> 1–4 Years Exp.</span>
-                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="calendar-check" class="w-4 h-4 mr-1"></i> Full-Time</span>
-                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="workflow" class="w-4 h-4 mr-1"></i> Operational Role</span>
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6 rounded-r shadow-sm">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i data-lucide="clock" class="h-5 w-5 text-amber-500"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-amber-700 font-medium">
+                                        We have met our current requirements and we'll open applications for these positions soon.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <h4 class="text-xl font-semibold text-gray-800 mb-2">About the Role</h4>
-                        <p class="text-gray-600 mb-4 text-base leading-relaxed">
-                            We are seeking a proactive and highly organized individual to manage our internal operations, teacher scheduling, and community engagement. You will be the bridge between our teaching staff, core team, and student community, ensuring smooth daily workflows and a positive environment.
+
+                         <div class="opacity-75 grayscale-[50%] pointer-events-none select-none">
+                            <div class="flex flex-wrap gap-3 text-sm mb-6">
+                                <span class="bg-white border border-gray-300 text-gray-600 px-3 py-1 rounded-full font-medium">Dehradun/Remote</span>
+                                <span class="bg-white border border-gray-300 text-gray-600 px-3 py-1 rounded-full font-medium">Operational Role</span>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-700 mb-2">About the Role</h4>
+                            <p class="text-gray-600 mb-4 text-sm">
+                                Managing internal operations, teacher scheduling, and community engagement.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-gray-300">
+                <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">Our Hiring Process</h3>
+                
+                <div class="bg-gradient-to-br from-white to-indigo-50 rounded-2xl p-8 shadow-lg border border-indigo-100">
+                    <div class="grid md:grid-cols-3 gap-8 text-center mb-8">
+                        <div class="p-4">
+                            <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600">
+                                <i data-lucide="brain" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800">Knowledge</h4>
+                            <p class="text-sm text-gray-600 mt-2">How well do you understand the domain?</p>
+                        </div>
+                        <div class="p-4">
+                            <div class="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
+                                <i data-lucide="heart" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800">Dedication</h4>
+                            <p class="text-sm text-gray-600 mt-2">How committed are you to the goal?</p>
+                        </div>
+                        <div class="p-4">
+                            <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-purple-600">
+                                <i data-lucide="lightbulb" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800">Creativity & Results</h4>
+                            <p class="text-sm text-gray-600 mt-2">What results can you deliver?</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <p class="text-gray-700 text-center max-w-2xl mx-auto italic font-medium">
+                            "You'll be judged and hired only on the basis of 3 things: how knowledgeable you are, how dedicated you are, and how much results you can deliver using your creativity."
                         </p>
                         
-                        <h5 class="font-bold text-gray-700 mt-4 mb-2">Key Responsibilities</h5>
-                        <ul class="list-disc list-outside ml-5 space-y-2 text-gray-700 text-sm">
-                            <li>Manage and optimize teacher-student scheduling and class coordination.</li>
-                            <li>Handle internal communications, documentation, and administrative tasks.</li>
-                            <li>Organize community-building activities, webinars, or workshops for teachers/students.</li>
-                            <li>Act as a reliable point of contact for internal team members and resolve operational issues promptly.</li>
-                        </ul>
+                        <div class="flex flex-col md:flex-row justify-center items-center gap-4 mt-8">
+                            <div class="flex items-center bg-white px-6 py-3 rounded-full shadow-sm border border-gray-200">
+                                <span class="bg-gray-800 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">1</span>
+                                <span class="font-semibold text-gray-700">Interview</span>
+                            </div>
+                            <i data-lucide="arrow-right" class="hidden md:block text-gray-400"></i>
+                            <i data-lucide="arrow-down" class="block md:hidden text-gray-400"></i>
+                            
+                            <div class="flex items-center bg-white px-6 py-3 rounded-full shadow-sm border border-gray-200">
+                                <span class="bg-gray-800 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">2</span>
+                                <span class="font-semibold text-gray-700">Take Home Project</span>
+                            </div>
+                            <i data-lucide="arrow-right" class="hidden md:block text-gray-400"></i>
+                            <i data-lucide="arrow-down" class="block md:hidden text-gray-400"></i>
 
-                        <h5 class="font-bold text-gray-700 mt-4 mb-2">What We’re Looking For</h5>
-                        <ul class="list-disc list-outside ml-5 space-y-1 text-gray-700 text-sm mt-2">
-                            <li>Exceptional organizational and problem-solving skills.</li>
-                            <li>Strong verbal and written communication in English.</li>
-                            <li>Proficiency in Google Workspace (Sheets, Docs) and scheduling tools.</li>
-                        </ul>
-                        
-                        <!-- Manual Application Block (Theme: Blue) -->
-                        <div class="mt-8 p-4 bg-blue-50 border-l-4 border-blue-600 text-gray-800 rounded-md">
-                            <p class="font-semibold text-blue-700 mb-1">📧 To Apply (Manual Option):</p>
-                            <p class="text-sm">Send your resume to <strong>exaltedmercuryteam@gmail.com</strong> with the subject line: <strong>“Application – Operations & Community Catalyst”</strong></p>
+                            <div class="flex items-center bg-emerald-100 px-6 py-3 rounded-full shadow-sm border border-emerald-200">
+                                <span class="bg-emerald-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">3</span>
+                                <span class="font-semibold text-emerald-800">Hired!</span>
+                            </div>
                         </div>
-
-                        <!-- Button uses 'flex w-full sm:w-auto' to ensure visibility on mobile -->
-                        <a href="mailto:exaltedmercuryteam@gmail.com?subject=Application%20–%20Operations%20%26%20Community%20Catalyst" class="mt-4 flex w-full sm:w-auto items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white bg-blue-600 hover:bg-blue-700 transition duration-300 transform hover:scale-[1.02]">
-                            Apply Now (Auto Mail)
-                            <i data-lucide="mail" class="w-4 h-4 ml-2"></i>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -272,9 +274,7 @@
         </div>
     </main>
     
-    <!-- JavaScript for Accordion Dropdown -->
     <script>
-        // Initialize Lucide Icons after content is loaded
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
         });
@@ -283,19 +283,12 @@
             const content = document.getElementById('job-' + jobId + '-content');
             const iconContainer = document.getElementById('icon-' + jobId);
             
-            // Toggle the 'active' class on content and icon container
             content.classList.toggle('active');
             iconContainer.classList.toggle('active');
 
-            // Find the current icon SVG and remove it
             iconContainer.innerHTML = '';
-            
-            // Set the new icon name on the container
             const newIcon = content.classList.contains('active') ? 'chevron-up' : 'chevron-down';
             iconContainer.setAttribute('data-lucide', newIcon);
-            
-            // Re-render the icon
-            // We pass the container to render only the new icon efficiently
             lucide.createIcons({ container: iconContainer });
         }
     </script>
