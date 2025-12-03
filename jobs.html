@@ -18,9 +18,13 @@
         .job-content.active {
             max-height: 5000px; 
         }
-        /* Specific border colors for active accordion */
-        #job-1-content.active { border-top-color: rgb(224, 231, 255); } /* Indigo */
-        #job-2-content.active { border-top-color: rgb(254, 243, 199); } /* Amber/Orange for Intern */
+        /* Specific border colors for active accordion based on new order */
+        /* Job 1: Intern (Orange) */
+        #job-1-content.active { border-top-color: rgb(254, 243, 199); } 
+        /* Job 2: Lead (Indigo) */
+        #job-2-content.active { border-top-color: rgb(224, 231, 255); } 
+        /* Job 3: Researcher (Purple) */
+        #job-3-content.active { border-top-color: rgb(233, 213, 255); } 
         
         .icon-rotate {
             transition: transform 0.3s;
@@ -70,8 +74,60 @@
 
         <div class="space-y-6 max-w-4xl mx-auto">
 
-            <div class="bg-white rounded-xl shadow-xl border border-indigo-200 hover:shadow-2xl transition duration-300 ring-2 ring-indigo-500/20">
+            <div class="bg-white rounded-xl shadow-xl border border-orange-200 hover:shadow-2xl transition duration-300 ring-2 ring-orange-400/20">
                 <button class="job-header w-full p-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleJob(1)">
+                    <div class="flex items-center space-x-4">
+                        <div class="p-3 bg-orange-500 rounded-full text-white">
+                            <i data-lucide="sprout" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800">Marketing Intern</h3>
+                            <p class="text-md text-orange-600 mt-1 font-medium">Paid Internship | Remote (Dehradun Preferred)</p>
+                        </div>
+                    </div>
+                    <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-1" data-lucide="chevron-down"></span>
+                </button>
+                <div id="job-1-content" class="job-content bg-orange-50/30">
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-3 text-sm mb-6">
+                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-1"></i> Dehradun Pref.</span>
+                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="check" class="w-4 h-4 mr-1"></i> Paid Position</span>
+                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="graduation-cap" class="w-4 h-4 mr-1"></i> Freshers Welcome</span>
+                        </div>
+                        
+                        <div class="mb-4">
+                             <h4 class="text-lg font-semibold text-gray-800 mb-2">Who Can Apply?</h4>
+                             <p class="text-gray-600 text-sm mb-3">
+                                We are looking for energetic individuals who are ready to learn and grow. 
+                                <span class="font-semibold text-orange-700">Candidates from Dehradun are preferred, but remote applications are welcome.</span>
+                             </p>
+                             <ul class="list-disc list-outside ml-5 space-y-2 text-gray-700 text-sm">
+                                <li><strong>College Students & Fresh Graduates:</strong> If you have the zeal to learn marketing, you are welcome.</li>
+                                <li>Individuals with strong communication skills and basic understanding of social media.</li>
+                                <li>Those willing to take initiative and work in a dynamic environment.</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-3 bg-green-50 border-l-4 border-green-500 rounded-md text-green-800 mb-6">
+                            <p class="font-bold text-sm flex items-center"><i data-lucide="trending-up" class="w-4 h-4 mr-2"></i> Career Growth:</p>
+                            <p class="text-xs sm:text-sm mt-1">We intend to convert high-performing interns into <strong>permanent full-time positions</strong> in the future.</p>
+                        </div>
+
+                        <div class="p-4 bg-orange-100 border-l-4 border-orange-500 text-gray-800 rounded-md">
+                            <p class="font-semibold text-orange-900 mb-1">📧 To Apply:</p>
+                            <p class="text-sm">Send your resume to <strong>exaltedmercuryteam@gmail.com</strong> with subject: "Application - Marketing Intern"</p>
+                        </div>
+
+                        <a href="mailto:exaltedmercuryteam@gmail.com?subject=Application%20–%20Marketing%20Intern" class="mt-4 flex w-full sm:w-auto items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white bg-orange-600 hover:bg-orange-700 transition duration-300 transform hover:scale-[1.02]">
+                            Apply Now (Auto Mail)
+                            <i data-lucide="mail" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xl border border-indigo-200 hover:shadow-2xl transition duration-300 ring-2 ring-indigo-500/20">
+                <button class="job-header w-full p-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleJob(2)">
                     <div class="flex items-center space-x-4">
                         <div class="p-3 bg-indigo-600 rounded-full text-white">
                             <i data-lucide="megaphone" class="w-6 h-6"></i>
@@ -81,9 +137,9 @@
                             <p class="text-md text-indigo-600 mt-1 font-medium">Remote | High Earning Potential | Immediate Joining</p>
                         </div>
                     </div>
-                    <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-1" data-lucide="chevron-down"></span>
+                    <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-2" data-lucide="chevron-down"></span>
                 </button>
-                <div id="job-1-content" class="job-content bg-indigo-50/30">
+                <div id="job-2-content" class="job-content bg-indigo-50/30">
                     <div class="p-6">
                         <div class="flex flex-wrap gap-3 text-sm mb-6">
                             <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="zap" class="w-4 h-4 mr-1"></i> Active Hiring</span>
@@ -132,50 +188,53 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-xl border border-orange-200 hover:shadow-2xl transition duration-300 ring-2 ring-orange-400/20">
-                <button class="job-header w-full p-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleJob(2)">
+            <div class="bg-white rounded-xl shadow-xl border border-purple-200 hover:shadow-2xl transition duration-300 ring-2 ring-purple-400/20">
+                <button class="job-header w-full p-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleJob(3)">
                     <div class="flex items-center space-x-4">
-                        <div class="p-3 bg-orange-500 rounded-full text-white">
-                            <i data-lucide="sprout" class="w-6 h-6"></i>
+                        <div class="p-3 bg-purple-600 rounded-full text-white">
+                            <i data-lucide="search" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <h3 class="text-2xl font-bold text-gray-800">Marketing Intern</h3>
-                            <p class="text-md text-orange-600 mt-1 font-medium">Paid Internship | Freshers Welcome | Pathway to Permanent Role</p>
+                            <h3 class="text-2xl font-bold text-gray-800">Market Researcher</h3>
+                            <p class="text-md text-purple-600 mt-1 font-medium">Remote | Analytics & Strategy | Stipend/Project Based</p>
                         </div>
                     </div>
-                    <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-2" data-lucide="chevron-down"></span>
+                    <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-3" data-lucide="chevron-down"></span>
                 </button>
-                <div id="job-2-content" class="job-content bg-orange-50/30">
+                <div id="job-3-content" class="job-content bg-purple-50/30">
                     <div class="p-6">
                         <div class="flex flex-wrap gap-3 text-sm mb-6">
-                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="check" class="w-4 h-4 mr-1"></i> Paid Position</span>
-                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="graduation-cap" class="w-4 h-4 mr-1"></i> Freshers/Students</span>
-                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="briefcase" class="w-4 h-4 mr-1"></i> PPO Potential</span>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="bar-chart-2" class="w-4 h-4 mr-1"></i> Data Driven</span>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="globe" class="w-4 h-4 mr-1"></i> Remote</span>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium flex items-center"><i data-lucide="target" class="w-4 h-4 mr-1"></i> Strategic Role</span>
                         </div>
                         
                         <div class="mb-4">
-                             <h4 class="text-lg font-semibold text-gray-800 mb-2">Who Can Apply?</h4>
+                             <h4 class="text-lg font-semibold text-gray-800 mb-2">Role Overview</h4>
                              <p class="text-gray-600 text-sm mb-3">
-                                We are looking for energetic individuals who are ready to learn and grow.
+                                We are looking for an analytical mind to help us understand the global education landscape better. Your insights will drive our next big moves.
                              </p>
+                             <h5 class="font-bold text-gray-700 mt-3 mb-2 text-sm">Key Responsibilities:</h5>
                              <ul class="list-disc list-outside ml-5 space-y-2 text-gray-700 text-sm">
-                                <li><strong>College Students & Fresh Graduates:</strong> If you have the zeal to learn marketing, you are welcome.</li>
-                                <li>Individuals with strong communication skills and basic understanding of social media.</li>
-                                <li>Those willing to take initiative and work in a dynamic environment.</li>
+                                <li>Conduct in-depth competitor analysis in the EdTech space.</li>
+                                <li>Identify new platforms and communities for potential student outreach.</li>
+                                <li>Create simple, data-backed reports to guide the marketing team.</li>
                             </ul>
+                            
+                            <h5 class="font-bold text-gray-700 mt-4 mb-2 text-sm">Requirements:</h5>
+                            <ul class="list-disc list-outside ml-5 space-y-2 text-gray-700 text-sm">
+                               <li>Strong internet research skills.</li>
+                               <li>Ability to use Google Sheets/Excel for data organization.</li>
+                               <li>Critical thinking and attention to detail.</li>
+                           </ul>
                         </div>
 
-                        <div class="p-3 bg-green-50 border-l-4 border-green-500 rounded-md text-green-800 mb-6">
-                            <p class="font-bold text-sm flex items-center"><i data-lucide="trending-up" class="w-4 h-4 mr-2"></i> Career Growth:</p>
-                            <p class="text-xs sm:text-sm mt-1">We intend to convert high-performing interns into <strong>permanent full-time positions</strong> in the future.</p>
+                        <div class="p-4 bg-purple-100 border-l-4 border-purple-500 text-gray-800 rounded-md">
+                            <p class="font-semibold text-purple-900 mb-1">📧 To Apply:</p>
+                            <p class="text-sm">Send your resume to <strong>exaltedmercuryteam@gmail.com</strong> with subject: "Application - Market Researcher"</p>
                         </div>
 
-                        <div class="p-4 bg-orange-100 border-l-4 border-orange-500 text-gray-800 rounded-md">
-                            <p class="font-semibold text-orange-900 mb-1">📧 To Apply:</p>
-                            <p class="text-sm">Send your resume to <strong>exaltedmercuryteam@gmail.com</strong> with subject: "Application - Marketing Intern"</p>
-                        </div>
-
-                        <a href="mailto:exaltedmercuryteam@gmail.com?subject=Application%20–%20Marketing%20Intern" class="mt-4 flex w-full sm:w-auto items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white bg-orange-600 hover:bg-orange-700 transition duration-300 transform hover:scale-[1.02]">
+                        <a href="mailto:exaltedmercuryteam@gmail.com?subject=Application%20–%20Market%20Researcher" class="mt-4 flex w-full sm:w-auto items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white bg-purple-600 hover:bg-purple-700 transition duration-300 transform hover:scale-[1.02]">
                             Apply Now (Auto Mail)
                             <i data-lucide="mail" class="w-4 h-4 ml-2"></i>
                         </a>
@@ -184,7 +243,7 @@
             </div>
 
             <div class="bg-gray-50 rounded-xl shadow border border-gray-200 opacity-90">
-                <button class="job-header w-full p-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleJob(3)">
+                <button class="job-header w-full p-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleJob(4)">
                     <div class="flex items-center space-x-4">
                         <div class="p-3 bg-gray-200 rounded-full text-gray-500">
                             <i data-lucide="school" class="w-6 h-6"></i>
@@ -194,9 +253,9 @@
                             <p class="text-sm text-gray-500 mt-1 font-medium italic">Status: Future Opening</p>
                         </div>
                     </div>
-                    <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-3" data-lucide="chevron-down"></span>
+                    <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-4" data-lucide="chevron-down"></span>
                 </button>
-                <div id="job-3-content" class="job-content bg-gray-100">
+                <div id="job-4-content" class="job-content bg-gray-100">
                     <div class="p-6">
                         <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6 rounded-r shadow-sm">
                             <div class="flex">
@@ -227,7 +286,7 @@
             </div>
 
             <div class="bg-gray-50 rounded-xl shadow border border-gray-200 opacity-90">
-                <button class="job-header w-full p-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleJob(4)">
+                <button class="job-header w-full p-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleJob(5)">
                     <div class="flex items-center space-x-4">
                         <div class="p-3 bg-gray-200 rounded-full text-gray-500">
                             <i data-lucide="users" class="w-6 h-6"></i>
@@ -237,9 +296,9 @@
                             <p class="text-sm text-gray-500 mt-1 font-medium italic">Status: Future Opening</p>
                         </div>
                     </div>
-                    <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-4" data-lucide="chevron-down"></span>
+                    <span class="text-3xl text-gray-400 icon-rotate w-6 h-6" id="icon-5" data-lucide="chevron-down"></span>
                 </button>
-                <div id="job-4-content" class="job-content bg-gray-100">
+                <div id="job-5-content" class="job-content bg-gray-100">
                     <div class="p-6">
                         <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6 rounded-r shadow-sm">
                             <div class="flex">
