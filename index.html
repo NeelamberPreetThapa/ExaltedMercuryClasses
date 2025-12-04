@@ -39,7 +39,7 @@
       "name": "How much does the 1:1 coaching cost?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Our pricing is flexible, ranging from $20/hour for quick fixes to volume-discounted packages like our popular Semester Progress option at $150/weekly (for an 8-hour commitment). We also offer intensive Exam Mastery blocks for focused preparation."
+        "text": "Our pricing is flexible, ranging from $5/class for quick doubts to $20/class for intensive mastery. We customize packages to suit your budget and academic needs."
       }
     }
   ]
@@ -182,6 +182,7 @@
         ];
         
         // --- Helper Function (Icon) ---
+        // ADDED 'mail' icon here for the new button
         const getIconSVG = (name, className = "w-6 h-6", attributes = '') => {
             const icons = {
                 checkCircle: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>`,
@@ -194,10 +195,11 @@
                 whatsapp: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="${className}" fill="currentColor"><path d="M380.9 97.1C339.4 54.4 283.5 32 223.7 32c-122.4 0-221.7 99.3-221.7 221.7 0 39.3 10.5 77.1 30.5 111.7l-32 116.7 121.7-31.5c33 17.8 70 27.2 108.8 27.2h.1c122.3 0 221.6-99.3 221.6-221.7 0-59.8-22.4-115.6-65.1-157.1zM223.7 448h-.1c-34.5 0-68.5-9.3-97.7-27l-66.2 17.2 17.4-63.9c-20.3-33.1-31.1-70.9-31.1-110 0-99.2 80.8-179.9 179.9-179.9 48.7 0 94.6 18.9 129.5 53.7 34.8 34.8 53.7 80.7 53.7 129.5 0 99.1-80.8 179.9-179.9 179.9zM358.2 298.5c-4.4-2.2-26-12.8-30.1-14.2s-7-2.2-9.9 2.2c-2.9 4.4-11.4 14.2-13.9 17.1s-4.9 3.3-9.1 1.1c-4.2-2.2-17.7-6.5-33.6-20.7-12.4-10.9-20.9-24.4-23.4-28.7s-2.5-4.4-1.9-8.4c.6-4 1.8-7.5 2.7-9.4s1.8-3.4 2.7-5.2c.9-1.8.4-3.4-.2-4.8s-2.6-3.7-5.2-6.5c-2.6-2.9-4.7-2.4-7.6-2.4h-8.2c-2.9 0-7.5 1.1-11.4 5.5s-14.9 14.5-14.9 35.4c0 20.9 15.3 41 17.4 43.8s30 46.1 72.8 64.9c10.9 4.8 19.4 7.7 26.1 9.8 8.8 2.7 16.9 2.3 23.3 1.4 7.3-1 22.5-9.2 25.7-18.1s3.3-16.7 2.3-18.4z"/></svg>`,
                 bookOpen: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 19V5c0-1.1.9-2 2-2h12.5L22 7.5V19c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2z"/><polyline points="12 2 12 7 17 7"/></svg>`,
                 feather: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M18 6l-6.5 6.5M12 12l-6.5 6.5M7.5 14.5L5 17m11.5-11.5L19 4"/></svg>`,
-                awardSolid: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="${className}"><path fill-rule="evenodd" d="M9.828 4.227a1.5 1.5 0 0 0-1.06-.44H5.973a1.5 1.5 0 0 0-1.06.44A1.5 1.5 0 0 0 4.5 5.25v13.5c0 .53.211 1.04.587 1.417a1.5 1.5 0 0 0 1.06.44h.798a.75.75 0 0 1 0 1.5h-1.5a3 3 0 0 1-3-3V5.25c0-1.28.986-2.31 2.227-2.435.592-.06.945-.262 1.107-.577.162-.315.152-.693-.03-1.026a1.5 1.5 0 0 0-1.378-2.262H5.973A3 3 0 0 0 3 5.25v13.5a3 3 0 0 0 3 3h.798a.75.75 0 0 1 0-1.5h-.798a1.5 1.5 0 0 1-1.06-.44A1.5 1.5 0 0 1 4.5 18.75V5.25c0-.53.211-1.04.587-1.417zM14.172 4.227a1.5 1.5 0 0 1 1.06-.44h3.795a1.5 1.5 0 0 1 1.06.44A1.5 1.5 0 0 1 19.5 5.25v13.5c0 .53-.211 1.04-.587 1.417a1.5 1.5 0 0 1-1.06.44h-.798a.75.75 0 0 0 0 1.5h1.5a3 3 0 0 0 3-3V5.25a3 3 0 0 0-2.227-2.935c-.592-.06-.945-.262-1.107-.577-.162-.315-.152-.693.03-1.026a1.5 1.5 0 0 1 1.378-2.262h3.795a3 3 0 0 1 3 3v13.5a3 3 0 0 1-3 3h-.798a.75.75 0 0 0 0 1.5h1.5a3 3 0 0 0 3-3V5.25a3 3 0 0 0-2.227-2.935c-.592-.06-.945-.262-1.107-.577-.162-.315-.152-.693.03-1.026a1.5 1.5 0 0 1 1.378-2.262H15.232a1.5 1.5 0 0 1-1.06-.44A1.5 1.5 0 0 1 14.172 4.227z" clip-rule="evenodd"/><path d="M12 17.5a.75.75 0 0 0 0 1.5h-1.5a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-1.5a.75.75 0 0 0 0-1.5z"/></svg>`,
+                awardSolid: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="${className}"><path fill-rule="evenodd" d="M9.828 4.227a1.5 1.5 0 0 0-1.06-.44H5.973a1.5 1.5 0 0 0-1.06.44A1.5 1.5 0 0 0 4.5 5.25v13.5c0 .53.211 1.04.587 1.417a1.5 1.5 0 0 0 1.06.44h.798a.75.75 0 0 1 0 1.5h-1.5a3 3 0 0 1-3-3V5.25c0-1.28.986-2.31 2.227-2.435.592-.06.945-.262 1.107-.577.162-.315.152-.693-.03-1.026a1.5 1.5 0 0 0-1.378-2.262H5.973A3 3 0 0 0 3 5.25v13.5a3 3 0 0 0 3 3h.798a.75.75 0 0 1 0-1.5h-.798a1.5 1.5 0 0 1-1.06-.44A1.5 1.5 0 0 1 4.5 18.75V5.25c0-.53.211-1.04.587-1.417zM14.172 4.227a1.5 1.5 0 0 1 1.06-.44h3.795a1.5 1.5 0 0 1 1.06.44A1.5 1.5 0 0 1 19.5 5.25v13.5c0 .53-.211 1.04-.587 1.417a1.5 1.5 0 0 1-1.06.44h-.798a.75.75 0 0 0 0 1.5h1.5a3 3 0 0 0 3-3V5.25a3 3 0 0 0-2.227-2.935c-.592-.06-.945-.262-1.107-.577-.162-.315-.152-.693.03-1.026a1.5 1.5 0 0 1 1.378-2.262H15.232a1.5 1.5 0 0 1-1.06-.44A1.5 1.5 0 0 1 14.172 4.227z" clip-rule="evenodd"/><path d="M12 17.5a.75.75 0 0 0 0 1.5h-1.5a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-1.5a.75.75 0 0 0 0-1.5z"/></svg>`,
                 heart: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`,
                 menu: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`,
-                x: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`
+                x: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+                mail: `<svg ${attributes} xmlns="http://www.w3.org/2000/svg" class="${className}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>`
             };
             return icons[name] || `<div ${attributes} class="${className}">?</div>`;
         };
@@ -528,87 +530,83 @@
             </section>
         `;
 
-        const renderPricingSection = () => `
-            <section id="pricing" class="py-16 sm:py-20 bg-gray-50">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-4">
-                        Transparent and Flexible Pricing
+        // === COMPLETELY REVAMPED PRICING SECTION ===
+        const renderPricingSection = () => {
+            // Create the mailto link with CC and Subject line
+            const mailToLink = `mailto:neelamber@exaltedmercury.com?cc=exaltedmercuryteam@gmail.com&subject=Inquiry%20regarding%20Custom%20Tutoring%20Plan`;
+
+            return `
+            <section id="pricing" class="py-16 sm:py-24 bg-gradient-to-br from-sky-50 to-white">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    
+                    <div class="inline-flex items-center justify-center p-3 bg-white rounded-full shadow-md mb-6 animate-bounce">
+                        ${getIconSVG("heart", "w-8 h-8 text-rose-500")}
+                    </div>
+                    
+                    <h2 class="text-4xl sm:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+                        Education Should Have <br class="hidden sm:block"/> <span class="text-sky-600">No Barriers.</span>
                     </h2>
-                    <p class="text-lg text-gray-600 text-center mb-10 sm:mb-12 max-w-3xl mx-auto">
-                        Invest in academic excellence with tailored packages designed for sustained progress.
+                    
+                    <p class="text-lg sm:text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+                        We understand that every student is unique, and so is every family's budget. We don't believe in rigid, one-size-fits-all contracts. Whether you need a quick concept cleared or a year-long mentor, we are here to support your child's dreams on <strong>your terms</strong>.
                     </p>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-                        <div class="bg-white p-8 rounded-xl shadow-xl flex flex-col justify-between border-t-8 border-gray-300">
-                            <div>
-                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Quick Fix</h3>
-                                <p class="text-gray-600 mb-6">One-off help for homework or pre-test review.</p>
-                                <p class="text-4xl font-extrabold text-sky-600 mb-6">
-                                    $20 <span class="text-lg text-gray-500 font-normal">/ hour</span>
-                                </p>
-                                <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>1 hour session minimum</span></li>
-                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Flexible scheduling</span></li>
-                                    <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Standard Q&A format</span></li>
-                                </ul>
-                            </div>
-                            <button
-                                onclick="scrollToSection('contact-form-area')"
-                                class="mt-8 w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 rounded-xl transition duration-300"
-                            >
-                                Book Now
-                            </button>
+                    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100 transform transition hover:scale-[1.01] duration-300">
+                        <div class="bg-sky-600 py-4 px-6">
+                            <h3 class="text-white text-lg font-bold uppercase tracking-widest">Flexible Investment Plans</h3>
                         </div>
-
-                        <div class="bg-white p-8 rounded-xl shadow-2xl flex flex-col justify-between border-t-8 border-sky-600 transform lg:scale-105">
-                            <div>
-                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Semester Progress</h3>
-                                <p class="text-gray-600 mb-6">Our most popular choice for long-term improvement.</p>
-                                <p class="text-4xl font-extrabold text-sky-600 mb-6">
-                                    $150 <span class="text-lg text-gray-500 font-normal">/ weekly (best value)</span>
-                                </p>
+                        <div class="p-8 sm:p-12">
+                            <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
+                                <span class="text-gray-500 font-medium text-lg">Plans starting from</span>
+                                <div class="text-5xl sm:text-6xl font-extrabold text-gray-900">
+                                    $5 <span class="text-3xl text-gray-400 font-normal">-</span> $20
+                                </div>
+                                <span class="text-gray-500 font-medium text-lg">per class</span>
                             </div>
-                            <ul class="space-y-3 text-gray-700">
-                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span><span class="font-semibold">8-hour block</span> commitment</span></li>
-                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Custom syllabus review</span></li>
-                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Weekly progress reports</span></li>
-                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Dedicated Q&A support</span></li>
-                            </ul>
-                            <button
-                                onclick="scrollToSection('contact-form-area')"
-                                class="mt-8 w-full font-bold py-3 rounded-xl shadow-lg transition duration-300 ${PRIMARY_COLOR_CLASSES}"
-                            >
-                                Secure Your Spot
-                            </button>
-                        </div>
 
-                        <div class="bg-white p-8 rounded-xl shadow-xl flex flex-col justify-between border-t-8 border-gray-300">
-                            <div>
-                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Exam Mastery</h3>
-                                <p class="text-gray-600 mb-6">Intensive, focused prep for major terminal exams.</p>
-                                <p class="text-4xl font-extrabold text-sky-600 mb-6">
-                                    $15 <span class="text-lg text-gray-500 font-normal">/ hour (volume discount)</span>
-                                </p>
+                            <div class="grid md:grid-cols-2 gap-8 text-left mb-10">
+                                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                                    <h4 class="font-bold text-gray-900 mb-2 flex items-center">
+                                        ${getIconSVG("checkCircle", "w-5 h-5 text-emerald-500 mr-2")} Quick Assistance ($15 - $20)
+                                    </h4>
+                                    <p class="text-sm text-gray-600">Perfect for homework help, single-topic doubts, or pre-exam boosters. No long-term commitment required.</p>
+                                </div>
+                                <div class="bg-sky-50 p-6 rounded-xl border border-sky-100">
+                                    <h4 class="font-bold text-gray-900 mb-2 flex items-center">
+                                        ${getIconSVG("awardSolid", "w-5 h-5 text-sky-600 mr-2")} Intensive Mastery ($7 - $15)
+                                    </h4>
+                                    <p class="text-sm text-gray-600">Dedicated mentorship for AP/A-Levels, semester-long courses, and competitive exam preparation.</p>
+                                </div>
                             </div>
-                            <ul class="space-y-3 text-gray-700">
-                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span><span class="font-semibold">15-hour block</span> booking</span></li>
-                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>Timed practice tests & grading</span></li>
-                                <li class="flex items-center text-sm">${getIconSVG("checkCircle", "w-5 h-5 mr-3 text-emerald-500")}<span>1-on-1 feedback on mock exams</span></li>
-                            </ul>
-                            <button
-                                onclick="scrollToSection('contact-form-area')"
-                                class="mt-8 w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 rounded-xl transition duration-300"
-                            >
-                                Target Your Grade
-                            </button>
+
+                            <p class="text-gray-900 font-bold mb-8 text-lg">
+                                We have everything to match your requirements perfectly.
+                            </p>
+
+                            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                                <button
+                                    onclick="scrollToSection('contact-form-area')"
+                                    class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-sky-600 hover:bg-sky-700 md:text-lg shadow-lg hover:shadow-xl transition duration-300"
+                                >
+                                    Get a Custom Quotation
+                                </button>
+                                <a
+                                    href="${mailToLink}"
+                                    class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border-2 border-gray-200 text-base font-bold rounded-xl text-gray-700 bg-white hover:bg-gray-50 hover:border-sky-300 md:text-lg transition duration-300 group"
+                                >
+                                    ${getIconSVG("mail", "w-5 h-5 mr-2 text-gray-500 group-hover:text-sky-600")}
+                                    Mail Us Your Needs Directly
+                                </a>
+                            </div>
+                            <p class="mt-4 text-xs text-gray-400">
+                                Clicking "Mail Us" will open your default email client.
+                            </p>
                         </div>
                     </div>
-                    <p class="mt-10 sm:mt-12 text-center text-gray-500 text-sm">
-                        *Note: Rates are based on standard US/UK private tutoring fees.
-                    </p>
                 </div>
             </section>
-        `;
+            `;
+        };
 
 
         const renderContactSection = () => `
