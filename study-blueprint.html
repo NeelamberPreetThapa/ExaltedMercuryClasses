@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlock Your Free Academic Kit</title>
+    <link rel="icon" type="image/webp" href="imgs/fevicon.png">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --accent: #8b5cf6;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 650px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Progress Bar */
+        .progress-container { background: #e0e7ff; height: 6px; width: 100%; }
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            height: 100%; width: 25%; transition: width 0.5s ease;
+        }
+
+        .step-content { padding: 40px; display: none; animation: slideUp 0.4s ease-out; }
+        .step-content.active { display: block; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 { margin-top: 0; color: #0f172a; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; }
+        
+        .badge { 
+            background: #dcfce7; color: #15803d; padding: 5px 12px; 
+            border-radius: 20px; font-size: 0.8rem; font-weight: 600; 
+            display: inline-block; margin-bottom: 15px; border: 1px solid #86efac;
+        }
+
+        p.desc { color: #64748b; margin-bottom: 25px; font-size: 1rem; line-height: 1.6; }
+
+        .form-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 0.95rem; color: #334155; }
+        
+        input, textarea {
+            width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 10px;
+            font-size: 1rem; transition: all 0.2s; box-sizing: border-box; background: #f8fafc;
+            font-family: inherit;
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
+
+        /* The Cards */
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .options-grid.full-width { grid-template-columns: 1fr; }
+
+        .option-card {
+            border: 2px solid var(--border); border-radius: 12px; padding: 16px;
+            cursor: pointer; text-align: left; transition: all 0.2s; background: #fff;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .option-card:hover { 
+            border-color: #a5b4fc; transform: translateY(-2px); 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .option-card.selected {
+            border-color: var(--primary); background: #eef2ff; color: var(--primary-dark);
+            font-weight: 600;
+        }
+        
+        .card-emoji { font-size: 1.4rem; min-width: 30px; }
+        .card-text { font-size: 0.95rem; line-height: 1.4; }
+        .option-card input { display: none; }
+
+        /* Advice Box */
+        .advice-box {
+            background: #eff6ff; border-left: 4px solid var(--primary);
+            padding: 18px; border-radius: 8px; margin-bottom: 25px;
+        }
+        .advice-title { font-weight: 700; color: var(--primary-dark); display: block; margin-bottom: 6px; }
+        .advice-text { color: #1e3a8a; font-size: 0.95rem; line-height: 1.5; }
+
+        /* Buttons */
+        .btn-group { display: flex; justify-content: space-between; margin-top: 35px; gap: 15px; }
+        .btn { padding: 15px 26px; border-radius: 10px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; }
+        .btn-next { background: var(--primary); color: white; width: 100%; }
+        .btn-next:hover { background: var(--primary-dark); }
+        .btn-back { background: transparent; color: #64748b; }
+        
+        @media (max-width: 500px) { .options-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <form id="mainForm">
+        
+        <div class="step-content active" id="step1">
+            <span class="badge">🎁 100% Free Resource Kit</span>
+            <h2>Let's Personalize Your Kit 📚</h2>
+            <p class="desc">We are generating a custom Helpbook & Practice Sheet for you. Tell us your level so we don't send you useless stuff.</p>
+
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" id="studentName" placeholder="e.g. Alex" required>
+            </div>
+
+            <div class="form-group">
+                <label>Current Grade / Year</label>
+                <div class="options-grid">
+                    <label class="option-card" onclick="selectCard(this, 'studentGrade')">
+                        <input type="radio" name="studentGrade" value="Grade 8 / Year 9"> 
+                        <span class="card-emoji">📚</span> <span class="card-text">Grade 8 / Year 9</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'studentGrade')">
+                        <input type="radio" name="studentGrade" value="Grade 9 / Year 10"> 
+                        <span class="card-emoji">⚡</span> <span class="card-text">Grade 9 / Year 10</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'studentGrade')">
+                        <input type="radio" name="studentGrade" value="Grade 10 / Year 11"> 
+                        <span class="card-emoji">🔥</span> <span class="card-text">Grade 10 / Year 11</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'studentGrade')">
+                        <input type="radio" name="studentGrade" value="Grade 11 / Year 12"> 
+                        <span class="card-emoji">🎓</span> <span class="card-text">Grade 11 / Year 12</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'studentGrade')">
+                        <input type="radio" name="studentGrade" value="Grade 12 / Year 13"> 
+                        <span class="card-emoji">👑</span> <span class="card-text">Grade 12 / Year 13</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'studentGrade')">
+                        <input type="radio" name="studentGrade" value="Other"> 
+                        <span class="card-emoji">🌍</span> <span class="card-text">Other</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Target Subject (The one you find hardest)</label>
+                <input type="text" id="subjectOfInterest" placeholder="e.g. Calculus, Physics, Economics" oninput="updateWeakLabel()">
+            </div>
+
+            <button type="button" class="btn btn-next" onclick="nextStep(2)">Next: Study Habits ➤</button>
+        </div>
+
+        <div class="step-content" id="step2">
+            <h2>Study Habits Analysis 🧠</h2>
+            <p class="desc">Be honest. This helps us customize your study schedule.</p>
+
+            <div class="form-group">
+                <label>What's your Study Vibe right now?</label>
+                <div class="options-grid full-width">
+                    <label class="option-card" onclick="selectCard(this, 'studySchedule')">
+                        <input type="radio" name="studySchedule" value="Rigid Routine"> 
+                        <span class="card-emoji">🤖</span> 
+                        <span class="card-text">I have a timetable & I stick to it strictly.</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'studySchedule')">
+                        <input type="radio" name="studySchedule" value="Bursts"> 
+                        <span class="card-emoji">🌊</span> 
+                        <span class="card-text">I study hard when inspired, but struggle with consistency.</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'studySchedule')">
+                        <input type="radio" name="studySchedule" value="Deadline Panic"> 
+                        <span class="card-emoji">👹</span> 
+                        <span class="card-text">I usually only study right before the exam (Cramming).</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'studySchedule')">
+                        <input type="radio" name="studySchedule" value="Pure Chaos"> 
+                        <span class="card-emoji">🌪️</span> 
+                        <span class="card-text">I don't have a plan, I just wing it everyday.</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'studySchedule')">
+                        <input type="radio" name="studySchedule" value="Overwhelmed"> 
+                        <span class="card-emoji">🤯</span> 
+                        <span class="card-text">I try to plan, but I get overwhelmed and stop.</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>How is your Attention Span?</label>
+                <div class="options-grid full-width">
+                    <label class="option-card" onclick="selectCard(this, 'focusLevel')">
+                        <input type="radio" name="focusLevel" value="High"> 
+                        <span class="card-emoji">🧘</span> <span class="card-text">High (I can study for 2+ hours easily)</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'focusLevel')">
+                        <input type="radio" name="focusLevel" value="Pomodoro"> 
+                        <span class="card-emoji">🍅</span> <span class="card-text">Medium (I need breaks every 30-40 mins)</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'focusLevel')">
+                        <input type="radio" name="focusLevel" value="Distracted"> 
+                        <span class="card-emoji">📱</span> <span class="card-text">Low (I get distracted by my phone constantly)</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'focusLevel')">
+                        <input type="radio" name="focusLevel" value="Daydreamer"> 
+                        <span class="card-emoji">☁️</span> <span class="card-text">I zone out and stare at walls often.</span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-back" onclick="prevStep(1)">← Back</button>
+            <button type="button" class="btn btn-next" onclick="nextStep(3)">Next: The Gaps ➤</button>
+        </div>
+
+        <div class="step-content" id="step3">
+            <h2>Identify the Leak 🚰</h2>
+            <p class="desc">Where are the marks actually going?</p>
+
+            <div class="form-group">
+                <label id="weakLabel">Which specific topic is giving you trouble?</label>
+                <textarea id="weakAreasIdentified" rows="2" placeholder="e.g. Integration, Vectors, or just 'Everything'"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Have you tried getting help before?</label>
+                <div class="options-grid full-width">
+                    <label class="option-card" onclick="selectCard(this, 'previousTutoring')">
+                        <input type="radio" name="previousTutoring" value="Self Study"> 
+                        <span class="card-emoji">🐺</span> 
+                        <span class="card-text">No, just me and my textbooks (Results are stuck).</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'previousTutoring')">
+                        <input type="radio" name="previousTutoring" value="YouTube Uni"> 
+                        <span class="card-emoji">📺</span> 
+                        <span class="card-text">I watch YouTube videos, but my doubts remain unsolved.</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'previousTutoring')">
+                        <input type="radio" name="previousTutoring" value="Group Class"> 
+                        <span class="card-emoji">👥</span> 
+                        <span class="card-text">Tried Group Classes, but I got lost in the crowd.</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'previousTutoring')">
+                        <input type="radio" name="previousTutoring" value="Private Tutor"> 
+                        <span class="card-emoji">👨‍🏫</span> 
+                        <span class="card-text">Had a Private Tutor, but I want even better results.</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>What stops you from scoring higher?</label>
+                <div class="options-grid full-width">
+                    <label class="option-card" onclick="selectCard(this, 'currentStruggle')">
+                        <input type="radio" name="currentStruggle" value="Doubts"> 
+                        <span class="card-emoji">🤔</span> <span class="card-text">Doubts pile up & I have no one to ask instantly.</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'currentStruggle')">
+                        <input type="radio" name="currentStruggle" value="Procrastination"> 
+                        <span class="card-emoji">🛌</span> <span class="card-text">I just can't get myself to start (Procrastination).</span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'currentStruggle')">
+                        <input type="radio" name="currentStruggle" value="Strategy"> 
+                        <span class="card-emoji">📉</span> <span class="card-text">I work hard, but my grades aren't improving (Strategy issue).</span>
+                    </label>
+                     <label class="option-card" onclick="selectCard(this, 'currentStruggle')">
+                        <input type="radio" name="currentStruggle" value="Exam Fear"> 
+                        <span class="card-emoji">😰</span> <span class="card-text">I know the material, but I panic during exams.</span>
+                    </label>
+                </div>
+            </div>
+
+            <input type="hidden" name="testAnxiety" value="Maybe"> 
+
+            <button type="button" class="btn btn-back" onclick="prevStep(2)">← Back</button>
+            <button type="button" class="btn btn-next" onclick="nextStep(4)">Next: Unlock Kit 🔓</button>
+        </div>
+
+        <div class="step-content" id="step4">
+            <h2>Your Kit is Ready! 🎉</h2>
+            <p class="desc">Analysis complete. We have tailored a strategy for your specific level.</p>
+
+            <div class="advice-box">
+                <span class="advice-title">💡 Expert Insight:</span>
+                <span id="dynamicAdviceText" class="advice-text">Loading...</span>
+            </div>
+
+            <div class="form-group" style="background: #ecfdf5; border: 2px dashed #34d399; padding: 18px; border-radius: 16px;">
+                <label style="color:#065f46; font-size:1rem; margin-bottom:8px;">
+                    Want a Free 1-on-1 "Walkthrough" Session?
+                </label>
+                <p style="font-size:0.9rem; color:#047857; margin-bottom:12px;">
+                    The resources are great, but students who get a <strong>Personal Strategy Session</strong> (to learn how to use them) improve 3x faster.
+                </p>
+                
+                <div class="options-grid full-width">
+                    <label class="option-card" onclick="selectCard(this, 'preferredService')">
+                        <input type="radio" name="preferredService" value="Yes, I want a Free Trial"> 
+                        <span class="card-emoji">🙋‍♂️</span> 
+                        <span class="card-text"><strong>Yes, book my Free Strategy Session.</strong> <br><span style="font-size:0.85rem; color:#6b7280;">(Zero cost. No commitment).</span></span>
+                    </label>
+                    <label class="option-card" onclick="selectCard(this, 'preferredService')">
+                        <input type="radio" name="preferredService" value="Just Materials"> 
+                        <span class="card-emoji">📄</span> 
+                        <span class="card-text">No thanks, I'll figure it out myself.</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address (For the PDF)</label>
+                <input type="email" id="emailAddress" placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>WhatsApp Number</label>
+                <span style="font-size:0.85rem; color:#64748b; margin-bottom: 5px; display:block;">We use this to send the "Cheat Sheet" images quickly.</span>
+                <input type="tel" id="whatsappNumber" placeholder="+1 / +44 ...">
+            </div>
+
+            <button type="button" class="btn btn-next" id="finalSubmitBtn" onclick="submitForm()">🚀 Send My Resources</button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 4;
+
+    function updateWeakLabel() {
+        const sub = document.getElementById('subjectOfInterest').value;
+        const label = document.getElementById('weakLabel');
+        label.innerText = sub.length > 2 ? `Which specific topic in ${sub} is giving you trouble?` : `Which specific topic is giving you trouble?`;
+    }
+
+    function selectCard(element, groupName) {
+        const inputs = document.querySelectorAll(`input[name="${groupName}"]`);
+        inputs.forEach(input => { input.parentElement.classList.remove('selected'); });
+        element.classList.add('selected');
+        element.querySelector('input').checked = true;
+    }
+
+    function updateProgress() {
+        document.getElementById('progressBar').style.width = ((currentStep / totalSteps) * 100) + "%";
+    }
+
+    function generateInsight() {
+        const struggle = document.querySelector('input[name="currentStruggle"]:checked')?.value;
+        const tutoring = document.querySelector('input[name="previousTutoring"]:checked')?.value;
+        
+        const adviceBox = document.getElementById('dynamicAdviceText');
+        let text = "";
+
+        // Nudge Logic: Validating their problem -> Offering the Solution (Trial)
+        
+        if (struggle === "Doubts") {
+            text = "You mentioned doubts pile up. Self-study materials are good, but they can't answer back. A Personal Mentor clears doubts instantly, saving you hours of frustration.";
+        } else if (struggle === "Exam Fear") {
+            text = "Anxiety kills more grades than lack of knowledge. Our Strategy Session will teach you 'Simulation Techniques' to handle exam pressure.";
+        } else if (tutoring === "Group Class") {
+            text = "You said Group Classes didn't work. That's because you need a Personalized Plan, not a generic lecture. The Free Session will build that plan for you.";
+        } else if (tutoring === "Private Tutor") {
+            text = "You've tried tutors before, but upgrading to a 'Strategy-First' mentor can unlock that A* grade you're chasing. We focus on technique, not just syllabus.";
+        } else {
+            text = "Your profile shows high potential. The Free Strategy Session is designed to help you organize these resources into a winning weekly routine.";
+        }
+
+        adviceBox.innerText = text;
+    }
+
+    function nextStep(step) {
+        // Validation
+        if (step === 2) {
+            if (!document.getElementById('studentName').value || !document.getElementById('subjectOfInterest').value) {
+                alert("Please fill in your details."); return;
+            }
+        }
+        if (step === 3) {
+            if (!document.querySelector('input[name="studySchedule"]:checked') || !document.querySelector('input[name="focusLevel"]:checked')) {
+                alert("Please select an option."); return;
+            }
+        }
+        if (step === 4) {
+            if (!document.getElementById('weakAreasIdentified').value || !document.querySelector('input[name="currentStruggle"]:checked')) {
+                alert("Please tell us your weak spots."); return;
+            }
+            generateInsight();
+        }
+
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        currentStep = step;
+        document.getElementById(`step${currentStep}`).classList.add('active');
+        updateProgress();
+    }
+
+    function prevStep(step) {
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        currentStep = step;
+        document.getElementById(`step${currentStep}`).classList.add('active');
+        updateProgress();
+    }
+
+    function submitForm() {
+        const btn = document.getElementById('finalSubmitBtn');
+        const email = document.getElementById('emailAddress').value;
+        const whatsapp = document.getElementById('whatsappNumber').value;
+        const pref = document.querySelector('input[name="preferredService"]:checked');
+
+        if (!pref) { alert("Please select if you want the Free Session or not."); return; }
+        if (!email.includes('@')) { alert("Invalid Email."); return; }
+        
+        // WhatsApp is NOT mandatory in validation anymore, but we still capture it if present
+
+        btn.innerText = "Sending...";
+        btn.disabled = true;
+
+        const formData = {
+            studentName: document.getElementById('studentName').value,
+            studentGrade: document.querySelector('input[name="studentGrade"]:checked')?.value || '',
+            subjectOfInterest: document.getElementById('subjectOfInterest').value,
+            
+            studySchedule: document.querySelector('input[name="studySchedule"]:checked')?.value || '',
+            focusLevel: document.querySelector('input[name="focusLevel"]:checked')?.value || '',
+            
+            weakAreasIdentified: document.getElementById('weakAreasIdentified').value,
+            currentStruggle: document.querySelector('input[name="currentStruggle"]:checked')?.value || '',
+            previousTutoring: document.querySelector('input[name="previousTutoring"]:checked')?.value || '',
+            
+            preferredService: document.querySelector('input[name="preferredService"]:checked')?.value || '',
+            
+            emailAddress: email,
+            whatsappNumber: whatsapp,
+            parentName: 'Not Provided',
+            
+            // Defaults
+            testAnxiety: '', phoneNumber: whatsapp, homeworkDone: '', reviewDone: '', dailyPractice: '', learningResources: '', 
+            desiredScore: '', mainObstacle: '', otherNotes: '', commentsByUs: '', followUpStatus: ''
+        };
+
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzON6z9_0-nmdy3ctItBDlKSlMzmhiMNTS96l-9zRrTtL-hmrukNZJEBglUULlwPH5V/exec";
+
+        fetch(scriptURL, { method: 'POST', body: JSON.stringify(formData), mode: 'no-cors' })
+        .then(() => {
+            alert("Success! 🎁 Check your Email shortly.");
+            window.location.reload(); 
+        })
+        .catch(error => {
+            console.error('Error!', error.message);
+            alert("Glitch in the matrix. Try again.");
+            btn.innerText = "🚀 Send My Resources";
+            btn.disabled = false;
+        });
+    }
+</script>
+
+</body>
+</html>
