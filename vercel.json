@@ -1,6 +1,7 @@
 {
   "rewrites": [
-    { "source": "/jobs", "destination": "/jobs.html" }, 
-    { "source": "/whiteboard", "destination": "/whiteboard.html" }
+    { "source": "/jobs", "destination": "/jobs.html" },
+    { "source": "/whiteboard", "destination": "/whiteboard.html" },
+    { "source": "/study-blueprint", "destination": "/study-blueprint.html" }
   ]
 }
