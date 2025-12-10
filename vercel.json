@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/jobs", "destination": "/jobs.html" },
     { "source": "/whiteboard", "destination": "/whiteboard.html" },
+    { "source": "/academic-audit", "destination": "/academic-audit.html" },
     { "source": "/study-blueprint", "destination": "/study-blueprint.html" }
   ]
 }
